@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# envs
+.venv/
+.env/
+.env*/
+
+# data, project & checkpoints
+data/raw
+results/checkpoints/
+results/hf_models/
+results/predictions/
+results/logs/
+results/analysis/*.csv
+results/analysis/final/qual_examples_*.jsonl
+results/test_metrics_summary.csv
+notebooks/colab_launcher_custom.ipynb
+
+# model artifacts
+*.pt
+*.safetensors
+*.bin
+
+# run logs
+*.log
+*.out
+*.err
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+
+# Python tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Editable install metadata
+src/schwartz_geometry_value_detection.egg-info/
+src/schwartz_value_geometry.egg-info/
+
+# Local temp outputs
+.tmp/
+
+# Backup files
+*.bk
+
+# Local sync helper
+sync_to_server*
+run_local.sh
+
+# Environment secrets
+.env

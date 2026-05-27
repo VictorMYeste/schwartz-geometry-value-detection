@@ -1,0 +1,9 @@
+numpy
+pandas
+pyyaml
+transformers>=4.50.0
+accelerate
+sentencepiece
+protobuf
+# For GPU PyTorch (CUDA 12.2), install with:
+# pip install torch --index-url https://download.pytorch.org/whl/cu122

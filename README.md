@@ -121,11 +121,41 @@ schwartz-geometry-value-detection/
   configs/              # YAML experiment configurations
   data/                 # Local data location, not redistributed
   scripts/              # Training, evaluation, analysis, and launch scripts
-  src/                  # Python package
+  src/schwartz_value_geometry/
+    data/               # Dataset loading and label collapsing
+    eval/               # Multi-label metrics and statistical tests
+    models/             # DeBERTa model and training utilities
+    utils/              # Config, logging, and seed helpers
   tests/                # Unit tests
   results/              # Generated metrics and analysis outputs
   paper/                # Paper assets and derived tables/figures
 ```
+
+## Installation
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip setuptools wheel
+python -m pip install -r requirements.txt
+python -m pip install -e ".[dev]"
+```
+
+For GPU training, install the PyTorch build appropriate for the target CUDA
+environment before running the training scripts.
+
+## Quickstart
+
+Run the current DeBERTa-v3-base BCE baseline:
+
+```bash
+python3 scripts/train_deberta.py \
+  --config configs/deberta_bce.yaml \
+  --seed 42
+```
+
+Use `--max_samples` for a smoke run and `--eval` to evaluate the saved best
+checkpoint on the test split.
 
 ## Status
 
