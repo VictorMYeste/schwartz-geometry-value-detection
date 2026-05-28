@@ -1,5 +1,4 @@
 import pandas as pd
-
 from schwartz_value_geometry.data.dataset import _collapse_attained_constrained
 
 

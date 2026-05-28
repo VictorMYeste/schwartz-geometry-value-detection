@@ -1,4 +1,4 @@
-"""Grid search for DeBERTa BCE baseline hyperparameters."""
+"""Grid search for DeBERTa hyperparameters."""
 
 from __future__ import annotations
 
@@ -14,12 +14,13 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from schwartz_value_geometry.models.training import train_and_eval
-from schwartz_value_geometry.utils.config import load_config
-from schwartz_value_geometry.utils.logging import (
+from schwartz_value_geometry.models.training import train_and_eval  # noqa: E402
+from schwartz_value_geometry.utils.config import load_config  # noqa: E402
+from schwartz_value_geometry.utils.logging import (  # noqa: E402
     get_logger,
     silence_transformers_logging,
 )
+from schwartz_value_geometry.utils.naming import loss_slug  # noqa: E402
 
 LOGGER = get_logger(__name__)
 CSV_FIELDS = [
@@ -66,7 +67,7 @@ def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Grid search for DeBERTa hparams.")
     parser.add_argument(
         "--config",
-        default="configs/deberta_sentence.yaml",
+        default="configs/deberta_bce.yaml",
         help="Base config to use.",
     )
     parser.add_argument(
@@ -166,7 +167,9 @@ def main() -> None:
             if args.max_samples is not None:
                 config["max_samples"] = args.max_samples
 
-            run_name = f"grid_deberta_sentence_lr{lr}_wd{wd}_b{batch}_ml{max_len}"
+            run_name = (
+                f"grid_deberta_{loss_slug(config)}_lr{lr}_wd{wd}_b{batch}_ml{max_len}"
+            )
             LOGGER.info(
                 "[%d/%d] lr=%.1e wd=%.2f batch=%d max_len=%d",
                 idx,

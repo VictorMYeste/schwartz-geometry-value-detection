@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import re
 import sys
 from pathlib import Path
 
@@ -12,26 +11,22 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from schwartz_value_geometry.models.training import run_eval, train_and_eval
-from schwartz_value_geometry.utils.config import load_config
-from schwartz_value_geometry.utils.logging import (
+from schwartz_value_geometry.models.training import (  # noqa: E402
+    run_eval,
+    train_and_eval,
+)
+from schwartz_value_geometry.utils.config import load_config  # noqa: E402
+from schwartz_value_geometry.utils.logging import (  # noqa: E402
     get_logger,
     silence_transformers_logging,
 )
-from schwartz_value_geometry.utils.seed import set_seed
+from schwartz_value_geometry.utils.naming import (  # noqa: E402
+    artifact_prefix,
+    loss_slug,
+)
+from schwartz_value_geometry.utils.seed import set_seed  # noqa: E402
 
 LOGGER = get_logger(__name__)
-
-
-def _model_slug(model_name: str) -> str:
-    base = model_name.split("/")[-1] if model_name else "deberta"
-    slug = re.sub(r"[^A-Za-z0-9.-]+", "-", base).strip("-").lower()
-    return slug or "deberta"
-
-
-def _loss_slug(config: dict) -> str:
-    loss_name = str(config.get("loss", {}).get("name", "bce")).strip().lower()
-    return re.sub(r"[^A-Za-z0-9.-]+", "-", loss_name).strip("-") or "bce"
 
 
 def _parse_args() -> argparse.Namespace:
@@ -88,8 +83,7 @@ def main() -> None:
         config["max_samples"] = args.max_samples
 
     model_name = config.get("model", {}).get("name", "microsoft/deberta-v3-base")
-    model_slug = _model_slug(model_name)
-    loss_slug = _loss_slug(config)
+    loss_name_slug = loss_slug(config)
 
     results_dir = Path(config.get("results_dir", "results"))
     if args.dry_run:
@@ -97,11 +91,11 @@ def main() -> None:
         config["results_dir"] = str(results_dir)
         config["save_checkpoints"] = False
 
-    artifact_prefix = f"deberta_sentence_{loss_slug}_seed{seed}_{model_slug}"
-    run_name = f"{artifact_prefix}_best"
+    prefix = artifact_prefix(config, seed=seed)
+    run_name = f"{prefix}_best"
     log_dir = results_dir / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
-    log_file = log_dir / f"{artifact_prefix}.log"
+    log_file = log_dir / f"{prefix}.log"
 
     logger = get_logger(__name__, log_file=str(log_file), overwrite=True)
     get_logger("schwartz_value_geometry.models.training", log_file=str(log_file))
@@ -113,7 +107,7 @@ def main() -> None:
     logger.info(
         "Run: model=%s loss=%s seed=%d eval=%s dry_run=%s",
         model_name,
-        loss_slug,
+        loss_name_slug,
         seed,
         args.eval,
         args.dry_run,
@@ -156,8 +150,8 @@ def main() -> None:
             raise FileNotFoundError(f"Best checkpoint not found at {ckpt_path}")
 
         predictions_dir = results_dir / "predictions"
-        pred_path = predictions_dir / f"{artifact_prefix}_test.jsonl"
-        metrics_path = log_dir / f"{artifact_prefix}_test_metrics.json"
+        pred_path = predictions_dir / f"{prefix}_test.jsonl"
+        metrics_path = log_dir / f"{prefix}_test_metrics.json"
         metrics = run_eval(
             config,
             checkpoint_path=ckpt_path,
