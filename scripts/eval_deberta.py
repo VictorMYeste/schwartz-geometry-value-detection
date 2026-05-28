@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import re
 import sys
 from pathlib import Path
 
@@ -12,20 +11,18 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from schwartz_value_geometry.models.training import run_eval
-from schwartz_value_geometry.utils.config import load_config
-from schwartz_value_geometry.utils.logging import (
+from schwartz_value_geometry.models.training import run_eval  # noqa: E402
+from schwartz_value_geometry.utils.config import load_config  # noqa: E402
+from schwartz_value_geometry.utils.logging import (  # noqa: E402
     get_logger,
     silence_transformers_logging,
 )
+from schwartz_value_geometry.utils.naming import (  # noqa: E402
+    artifact_prefix,
+    loss_slug,
+)
 
 LOGGER = get_logger(__name__)
-
-
-def _model_slug(model_name: str) -> str:
-    base = model_name.split("/")[-1] if model_name else "deberta"
-    slug = re.sub(r"[^A-Za-z0-9.-]+", "-", base).strip("-").lower()
-    return slug or "deberta"
 
 
 def _parse_args() -> argparse.Namespace:
@@ -35,6 +32,12 @@ def _parse_args() -> argparse.Namespace:
         "--checkpoint",
         default=None,
         help="Path to checkpoint. If omitted, inferred from config/loss/seed.",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=None,
+        help="Override config seed when inferring checkpoint and output names.",
     )
     parser.add_argument(
         "--split",
@@ -48,9 +51,29 @@ def _parse_args() -> argparse.Namespace:
         help="Enable debug logging.",
     )
     parser.add_argument(
+        "--max_samples",
+        type=int,
+        default=None,
+        help="Optional sample limit for quick evaluation runs.",
+    )
+    parser.add_argument(
         "--tune_threshold",
         action="store_true",
         help="Sweep thresholds on the split to maximize macro-F1.",
+    )
+    parser.add_argument(
+        "--use_validation_thresholds",
+        action="store_true",
+        help=(
+            "Tune thresholds on validation, freeze them, and apply them to the "
+            "requested split."
+        ),
+    )
+    parser.add_argument(
+        "--threshold_mode",
+        choices=["global", "per_label"],
+        default="per_label",
+        help="Threshold tuning strategy.",
     )
     parser.add_argument(
         "--threshold_start",
@@ -77,27 +100,34 @@ def main() -> None:
     args = _parse_args()
     if args.debug:
         LOGGER.setLevel("DEBUG")
+    if args.tune_threshold and args.use_validation_thresholds:
+        raise ValueError(
+            "Use either --tune_threshold for same-split diagnostics or "
+            "--use_validation_thresholds for protocol-safe evaluation, not both."
+        )
 
     silence_transformers_logging()
 
     config = load_config(args.config)
+    if args.seed is not None:
+        config["seed"] = int(args.seed)
+    if args.max_samples is not None:
+        config["max_samples"] = int(args.max_samples)
     LOGGER.debug("Loaded config keys: %s", list(config.keys()))
     model_name = config.get("model", {}).get("name", "microsoft/deberta-v3-base")
-    model_slug = _model_slug(model_name)
     seed = int(config.get("seed", 42))
-    loss_name = str(config.get("loss", {}).get("name", "bce")).strip().lower()
-    loss_slug = re.sub(r"[^A-Za-z0-9.-]+", "-", loss_name).strip("-") or "bce"
+    loss_name_slug = loss_slug(config)
 
     LOGGER.debug(
         "Eval config: loss=%s seed=%d split=%s",
-        loss_slug,
+        loss_name_slug,
         seed,
         args.split,
     )
 
     results_dir = Path(config.get("results_dir", "results"))
-    artifact_prefix = f"deberta_sentence_{loss_slug}_seed{seed}_{model_slug}"
-    run_name = f"{artifact_prefix}_best"
+    prefix = artifact_prefix(config, seed=seed)
+    run_name = f"{prefix}_best"
     ckpt_path = (
         Path(args.checkpoint)
         if args.checkpoint
@@ -107,14 +137,38 @@ def main() -> None:
 
     predictions_dir = results_dir / "predictions"
     logs_dir = results_dir / "logs"
-    pred_path = predictions_dir / f"{artifact_prefix}_{args.split}.jsonl"
-    metrics_path = logs_dir / f"{artifact_prefix}_{args.split}_metrics.json"
+    pred_path = predictions_dir / f"{prefix}_{args.split}.jsonl"
+    metrics_path = logs_dir / f"{prefix}_{args.split}_metrics.json"
+    frozen_thresholds = None
+
+    if args.use_validation_thresholds:
+        val_pred_path = predictions_dir / f"{prefix}_validation_thresholds.jsonl"
+        val_metrics_path = logs_dir / f"{prefix}_validation_thresholds.json"
+        LOGGER.info(
+            "Tuning %s thresholds on validation split before evaluating %s",
+            args.threshold_mode,
+            args.split,
+        )
+        val_metrics = run_eval(
+            config,
+            checkpoint_path=ckpt_path,
+            split="validation",
+            output_pred_path=val_pred_path,
+            output_metrics_path=val_metrics_path,
+            debug=args.debug,
+            tune_threshold=True,
+            threshold_tuning_mode=args.threshold_mode,
+            threshold_start=args.threshold_start,
+            threshold_stop=args.threshold_stop,
+            threshold_step=args.threshold_step,
+        )
+        frozen_thresholds = val_metrics["threshold_tuning"]["thresholds"]
 
     LOGGER.info("=" * 80)
     LOGGER.info(
         "Run: eval model=deberta variant=%s loss=%s seed=%d split=%s",
         model_name,
-        loss_slug,
+        loss_name_slug,
         seed,
         args.split,
     )
@@ -127,6 +181,8 @@ def main() -> None:
         output_metrics_path=metrics_path,
         debug=args.debug,
         tune_threshold=args.tune_threshold,
+        threshold_tuning_mode=args.threshold_mode,
+        thresholds=frozen_thresholds,
         threshold_start=args.threshold_start,
         threshold_stop=args.threshold_stop,
         threshold_step=args.threshold_step,

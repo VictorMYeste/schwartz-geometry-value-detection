@@ -11,13 +11,23 @@ from pathlib import Path
 
 import numpy as np
 import torch
-from torch import nn
 from torch.utils.data import DataLoader, Dataset
 
 from schwartz_value_geometry.data.dataset import get_label_names, load_split
-from schwartz_value_geometry.eval.metrics import compute_f1_metrics, sweep_thresholds
+from schwartz_value_geometry.eval.metrics import (
+    binarize_probs,
+    compute_all_metrics,
+    compute_f1_metrics,
+    sweep_per_label_thresholds,
+    sweep_thresholds,
+)
 from schwartz_value_geometry.models.deberta import build_deberta_model, encode_batch
+from schwartz_value_geometry.models.losses import (
+    build_loss_from_config,
+    loss_config_for_metadata,
+)
 from schwartz_value_geometry.utils.logging import get_logger
+from schwartz_value_geometry.utils.naming import loss_slug
 from schwartz_value_geometry.utils.seed import set_seed
 
 LOGGER = get_logger(__name__)
@@ -124,6 +134,10 @@ def _save_hf_bundle(
         f"- Labels: `{len(label_names)}`",
         "- Input: `sentence`",
     ]
+    if "loss" in training_args:
+        loss_meta = training_args["loss"]
+        loss_name = loss_meta.get("name", loss_meta) if isinstance(loss_meta, dict) else loss_meta
+        lines.append(f"- Loss: `{loss_name}`")
     (output_dir / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -205,7 +219,7 @@ def _predict_arrays(
     dataloader,
     device,
     *,
-    threshold: float,
+    threshold: float | list[float] | np.ndarray,
     use_bf16: bool,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     model.eval()
@@ -222,7 +236,7 @@ def _predict_arrays(
                 outputs = model(**batch)
                 logits = _get_logits(outputs)
             probs = torch.sigmoid(logits.float()).cpu().numpy()
-            preds = (probs >= threshold).astype(int)
+            preds = binarize_probs(probs, threshold=threshold)
             all_labels.append(labels.cpu().numpy())
             all_probs.append(probs)
             all_preds.append(preds)
@@ -238,7 +252,7 @@ def _evaluate(
     device,
     *,
     label_names: list[str],
-    threshold: float,
+    threshold: float | list[float] | np.ndarray,
     use_bf16: bool = False,
 ) -> dict[str, object]:
     y_true, y_pred, _ = _predict_arrays(
@@ -249,6 +263,17 @@ def _evaluate(
         use_bf16=use_bf16,
     )
     return compute_f1_metrics(y_true, y_pred, label_names=label_names)
+
+
+def _threshold_meta(
+    threshold: float | list[float] | np.ndarray,
+    *,
+    label_names: list[str],
+) -> float | dict[str, float]:
+    if np.isscalar(threshold):
+        return float(threshold)
+    arr = np.asarray(threshold, dtype=float)
+    return {label: float(arr[idx]) for idx, label in enumerate(label_names)}
 
 
 def _prediction_records(
@@ -287,7 +312,7 @@ def save_predictions_jsonl(
     *,
     max_length: int,
     batch_size: int,
-    threshold: float,
+    threshold: float | list[float] | np.ndarray,
     use_bf16: bool = False,
 ) -> None:
     """Run inference on a dataframe and save predictions to JSONL."""
@@ -325,6 +350,8 @@ def run_eval(
     output_metrics_path: Path,
     debug: bool = False,
     tune_threshold: bool = False,
+    threshold_tuning_mode: str = "global",
+    thresholds: float | list[float] | np.ndarray | None = None,
     threshold_start: float = 0.0,
     threshold_stop: float = 1.0,
     threshold_step: float = 0.01,
@@ -348,7 +375,12 @@ def run_eval(
     use_bf16 = _resolve_bf16(training_cfg, device)
     max_length = int(training_cfg.get("max_length", 512))
     batch_size = int(training_cfg.get("batch_size", 16))
-    threshold = float(training_cfg.get("pred_threshold", 0.5))
+    threshold: float | list[float] | np.ndarray
+    threshold = (
+        thresholds
+        if thresholds is not None
+        else float(training_cfg.get("pred_threshold", 0.5))
+    )
 
     df = load_split(split)
     if debug:
@@ -375,27 +407,70 @@ def run_eval(
         use_bf16=use_bf16,
     )
 
-    metrics = compute_f1_metrics(y_true, y_pred, label_names=label_names)
+    metrics = compute_all_metrics(y_true, y_pred, y_probs, label_names=label_names)
     metrics["meta"] = {
         "model_name": model_name,
+        "loss": loss_config_for_metadata(config, label_names=label_names),
         "input": "sentence",
         "seed": config.get("seed", 42),
         "split": split,
-        "threshold": threshold,
+        "threshold": _threshold_meta(threshold, label_names=label_names),
+        "threshold_source": "provided" if thresholds is not None else "config",
     }
 
     if tune_threshold:
-        sweep = sweep_thresholds(
-            y_true,
-            y_probs,
-            label_names=label_names,
-            start=threshold_start,
-            stop=threshold_stop,
-            step=threshold_step,
-        )
-        metrics["threshold_sweep"] = {
-            "best_threshold": sweep["best_threshold"],
-            "best_metrics": sweep["best_metrics"],
+        if threshold_tuning_mode == "global":
+            sweep = sweep_thresholds(
+                y_true,
+                y_probs,
+                label_names=label_names,
+                start=threshold_start,
+                stop=threshold_stop,
+                step=threshold_step,
+            )
+            threshold = float(sweep["best_threshold"])
+            y_pred = binarize_probs(y_probs, threshold=threshold)
+            metrics = compute_all_metrics(
+                y_true, y_pred, y_probs, label_names=label_names
+            )
+            metrics["threshold_tuning"] = {
+                "mode": "global",
+                "threshold": threshold,
+                "thresholds": threshold,
+                "best_metrics": sweep["best_metrics"],
+            }
+        elif threshold_tuning_mode == "per_label":
+            sweep = sweep_per_label_thresholds(
+                y_true,
+                y_probs,
+                label_names=label_names,
+                start=threshold_start,
+                stop=threshold_stop,
+                step=threshold_step,
+            )
+            threshold = list(sweep["best_thresholds"])
+            y_pred = binarize_probs(y_probs, threshold=threshold)
+            metrics = compute_all_metrics(
+                y_true, y_pred, y_probs, label_names=label_names
+            )
+            metrics["threshold_tuning"] = {
+                "mode": "per_label",
+                "thresholds": sweep["best_thresholds"],
+                "thresholds_by_label": sweep["best_thresholds_by_label"],
+                "best_metrics": sweep["best_metrics"],
+            }
+        else:
+            raise ValueError(
+                "threshold_tuning_mode must be one of {'global', 'per_label'}"
+            )
+        metrics["meta"] = {
+            "model_name": model_name,
+            "loss": loss_config_for_metadata(config, label_names=label_names),
+            "input": "sentence",
+            "seed": config.get("seed", 42),
+            "split": split,
+            "threshold": _threshold_meta(threshold, label_names=label_names),
+            "threshold_source": f"tuned_{threshold_tuning_mode}",
         }
 
     output_pred_path.parent.mkdir(parents=True, exist_ok=True)
@@ -515,10 +590,16 @@ def train_and_eval(
         weight_decay=weight_decay,
         training_cfg=training_cfg,
     )
-    loss_fn = nn.BCEWithLogitsLoss()
+    loss_fn = build_loss_from_config(
+        config,
+        label_names=label_names,
+        train_labels=train_labels,
+        seed=int(config.get("seed", 42)),
+    )
+    loss_meta = loss_config_for_metadata(config, label_names=label_names)
 
     best_metric = -math.inf
-    suffix = run_name or "deberta_bce_best"
+    suffix = run_name or f"deberta_{loss_slug(config)}_best"
     best_path = ckpt_dir / f"{suffix}.pt"
     last_path = ckpt_dir / f"{suffix}_last.pt"
     start_epoch = 1
@@ -540,7 +621,8 @@ def train_and_eval(
         LOGGER.info("Resumed training from %s (epoch %d)", resume_path, start_epoch)
 
     LOGGER.info(
-        "Training config: batch=%d lr=%g wd=%g max_len=%d accum=%d save_ckpt=%s",
+        "Training config: loss=%s batch=%d lr=%g wd=%g max_len=%d accum=%d save_ckpt=%s",
+        json.dumps(loss_meta, sort_keys=True),
         batch_size,
         learning_rate,
         weight_decay,
@@ -637,6 +719,7 @@ def train_and_eval(
                         "num_epochs": num_epochs,
                         "grad_accum_steps": grad_accum_steps,
                         "pred_threshold": threshold,
+                        "loss": loss_meta,
                     }
                     _save_hf_bundle(
                         model, tokenizer, label_names, hf_dir, extra_info=hf_meta
@@ -662,6 +745,7 @@ def train_and_eval(
                     "optimizer_state": optimizer.state_dict(),
                     "epoch": epoch,
                     "best_metric": best_metric,
+                    "loss": loss_meta,
                 },
                 last_path,
             )

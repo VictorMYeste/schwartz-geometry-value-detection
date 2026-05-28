@@ -11,12 +11,19 @@ from schwartz_value_geometry.utils.logging import get_logger
 LOGGER = get_logger(__name__)
 
 DEFAULT_SEED = 42
-ALT_SEEDS = (7, 1701)
+TUNING_SEEDS = (42, 7, 1701)
+FINAL_SEEDS = (42, 7, 1701, 11, 1984)
+ALT_SEEDS = FINAL_SEEDS[1:]
 
 
 def get_default_seeds() -> tuple[int, ...]:
     """Return the default list of seeds used across the project."""
-    return (DEFAULT_SEED,) + ALT_SEEDS
+    return FINAL_SEEDS
+
+
+def get_tuning_seeds() -> tuple[int, ...]:
+    """Return the preliminary tuning/debugging seeds."""
+    return TUNING_SEEDS
 
 
 def set_seed(seed: int = DEFAULT_SEED, *, debug: bool = False) -> None:

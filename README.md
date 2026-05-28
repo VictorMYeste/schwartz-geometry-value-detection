@@ -146,12 +146,47 @@ environment before running the training scripts.
 
 ## Quickstart
 
-Run the current DeBERTa-v3-base BCE baseline:
+Run the DeBERTa-v3-base BCE baseline:
 
 ```bash
 python3 scripts/train_deberta.py \
   --config configs/deberta_bce.yaml \
   --seed 42
+```
+
+Run the same model with asymmetric loss:
+
+```bash
+python3 scripts/train_deberta.py \
+  --config configs/deberta_asl.yaml \
+  --seed 42
+```
+
+Structured-loss configs are also available:
+
+```text
+configs/deberta_random_geoloss.yaml
+configs/deberta_empirical_structure.yaml
+configs/deberta_schwartz_geoloss.yaml
+configs/deberta_schwartz_geosmooth.yaml
+```
+
+Inspect the planned ASL/GeoLoss/GeoSmooth tuning grid:
+
+```bash
+python3 scripts/grid_loss_hparams.py --dry_run
+```
+
+Aggregate trained seed results into paper-ready CSVs:
+
+```bash
+python3 scripts/aggregate_results.py
+```
+
+Run the Sirius development smoke job:
+
+```bash
+sbatch scripts/run_sirius_smoke.sh
 ```
 
 Use `--max_samples` for a smoke run and `--eval` to evaluate the saved best

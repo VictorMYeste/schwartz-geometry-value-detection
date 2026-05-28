@@ -1,0 +1,4 @@
+loss:
+  name: schwartz_geosmooth
+  base: asl
+  tau: 0.2
