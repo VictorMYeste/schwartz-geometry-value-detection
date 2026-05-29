@@ -8,13 +8,14 @@
 #SBATCH --output=/lustre/scratch/%u/schwartz-geometry-value-detection/logs/%x-%j.out
 #SBATCH --error=/lustre/scratch/%u/schwartz-geometry-value-detection/logs/%x-%j.err
 #SBATCH --hint=nomultithread
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=vicyesmo@upv.es
 
 set -euo pipefail
 
 PROJECT_DIR="$HOME/schwartz-geometry-value-detection"
 VENV_DIR="$PROJECT_DIR/.venv"
 PYTHON_BIN="$VENV_DIR/bin/python"
-BASE_PYTHON="${BASE_PYTHON:-$HOME/miniforge3/envs/py311/bin/python}"
 TORCH_INDEX_URL="${TORCH_INDEX_URL:-https://download.pytorch.org/whl/cu128}"
 VENV_READY_FILE=".bootstrap_complete"
 
@@ -22,6 +23,34 @@ cd "$PROJECT_DIR"
 
 is_py311_plus() {
   "$1" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)' >/dev/null 2>&1
+}
+
+discover_base_python() {
+  local candidates=()
+  if [ -n "${BASE_PYTHON:-}" ] && [ "$BASE_PYTHON" != "/path/to/python3.11" ]; then
+    candidates+=("$BASE_PYTHON")
+  fi
+  candidates+=(
+    "$HOME/miniforge3/envs/py311/bin/python"
+    "$HOME/miniconda3/envs/py311/bin/python"
+    "$HOME/anaconda3/envs/py311/bin/python"
+  )
+
+  local cmd
+  for cmd in python3.11 python3 python; do
+    if command -v "$cmd" >/dev/null 2>&1; then
+      candidates+=("$(command -v "$cmd")")
+    fi
+  done
+
+  local candidate
+  for candidate in "${candidates[@]}"; do
+    if [ -x "$candidate" ] && is_py311_plus "$candidate"; then
+      printf '%s\n' "$candidate"
+      return 0
+    fi
+  done
+  return 1
 }
 
 configure_cuda_lib_path() {
@@ -39,18 +68,16 @@ configure_cuda_lib_path() {
 echo "Using system python from Slurm environment:"
 echo "HOSTNAME=$(hostname)"
 echo "PATH=$PATH"
-echo "BASE_PYTHON=$BASE_PYTHON"
 
-if [ ! -x "$BASE_PYTHON" ]; then
-  echo "BASE_PYTHON does not exist or is not executable: $BASE_PYTHON" >&2
-  echo "Pass a valid path with: --export=ALL,BASE_PYTHON=/path/to/python3.11" >&2
+if ! BASE_PYTHON="$(discover_base_python)"; then
+  echo "Could not find an executable Python >= 3.11 in the Slurm job environment." >&2
+  echo "Try one of:" >&2
+  echo "  module avail python" >&2
+  echo "  module load <python-3.11-module>" >&2
+  echo "  sbatch --export=ALL,BASE_PYTHON=/real/path/to/python3.11 scripts/bootstrap_slurm_venv.sh" >&2
   exit 1
 fi
-if ! is_py311_plus "$BASE_PYTHON"; then
-  echo "BASE_PYTHON is too old (need >=3.11): $BASE_PYTHON" >&2
-  "$BASE_PYTHON" -V >&2 || true
-  exit 1
-fi
+echo "BASE_PYTHON=$BASE_PYTHON"
 
 "$BASE_PYTHON" -V
 

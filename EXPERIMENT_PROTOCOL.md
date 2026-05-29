@@ -54,12 +54,33 @@ If Slurm cannot see this `.venv` or CUDA libraries from inside `sbatch`, use the
 bootstrap fallback:
 
 ```bash
-sbatch --export=ALL,BASE_PYTHON=/path/to/python3.11 scripts/bootstrap_slurm_venv.sh
+sbatch scripts/bootstrap_slurm_venv.sh
 ```
 
-The smoke script does not require a bootstrap marker. It only requires that
+The bootstrap script auto-detects Python 3.11+. If auto-detection fails, pass a
+real executable path, not the placeholder:
+
+```bash
+sbatch --export=ALL,BASE_PYTHON=/real/path/to/python3.11 scripts/bootstrap_slurm_venv.sh
+```
+
+The Slurm scripts do not require a bootstrap marker. They only require that
 `.venv/bin/python` exists and can import PyTorch, Transformers, and CUDA inside
 the Slurm job.
+
+UEV does not use the Sirius bootstrap script. Create or update the `.venv` from
+the login session. Use `safetensors` and PyTorch `>=2.6` when possible because
+recent Transformers versions block `torch.load` on older PyTorch versions when a
+model falls back to `pytorch_model.bin`:
+
+```bash
+cd /home/hpc/34045staff/schwartz-geometry-value-detection
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m pip install --upgrade --force-reinstall torch==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+python -m pip uninstall -y torchvision torchaudio
+python -m pip install -e .
+```
 
 ### 2. Run Development Smoke Tests
 
@@ -114,33 +135,86 @@ Do not start grid search until the smoke job completes without errors.
 
 ### 3. Tune Method Hyperparameters
 
-After the smoke tests pass, tune ASL:
+After the smoke tests pass, run a dry-run plan on Sirius:
+
+```bash
+sbatch --export=ALL,DRY_RUN=1 scripts/run_sirius_tuning.sh
+```
+
+Then launch ASL tuning:
+
+```bash
+sbatch scripts/run_sirius_tuning.sh
+```
+
+This is equivalent to:
 
 ```bash
 python3 scripts/grid_loss_hparams.py --methods asl
 ```
 
-Then tune the structured methods:
-
-```bash
-python3 scripts/grid_loss_hparams.py --methods geoloss schwartz_geosmooth
-```
-
-The tuning grid uses the tuning seeds `42, 7, 1701` by default and writes:
+but inside the Sirius Slurm environment, with CUDA checks, `.venv` activation,
+and tuning artifacts isolated under:
 
 ```text
-results/analysis/grid_loss_hparams.csv
+results/tuning/
+results/tuning/grid_loss_hparams.csv
 ```
 
-Use `--dry_run` before launching a grid and `--max_samples` only for debugging:
+After selecting the ASL hyperparameters on validation, update
+`configs/deberta_asl.yaml` and copy the selected ASL base parameters
+(`gamma_pos`, `gamma_neg`, `clip`, `eps`) into each structured method loss
+block before geometry tuning. The geometry configs use `base: asl`, but they do
+not automatically inherit values from `configs/deberta_asl.yaml`.
+
+Then tune the geometry-aware methods:
 
 ```bash
-python3 scripts/grid_loss_hparams.py --methods asl --dry_run
-python3 scripts/grid_loss_hparams.py --methods asl --max_samples 128 --limit 2
+sbatch --export=ALL,METHODS=geoloss,schwartz_geosmooth scripts/run_sirius_tuning.sh
 ```
+
+This order matters because the geometry-aware configs use ASL as their base
+loss. If ASL changes, final geometry tuning should use the frozen ASL setting.
+
+The full exploratory `METHODS=all` grid contains 96 training runs:
+
+- ASL: 16 parameter combinations x 3 tuning seeds = 48 runs;
+- random GeoLoss: 4 lambda values x 3 tuning seeds = 12 runs;
+- empirical structure: 4 lambda values x 3 tuning seeds = 12 runs;
+- Schwartz GeoLoss: 4 lambda values x 3 tuning seeds = 12 runs;
+- Schwartz GeoSmooth: 4 tau values x 3 tuning seeds = 12 runs.
+
+Use it only if you intentionally want a single exploratory pass with the current
+ASL defaults:
+
+```bash
+sbatch --export=ALL,METHODS=all scripts/run_sirius_tuning.sh
+```
+
+The Slurm script is resumable through the CSV file: completed rows are skipped
+when the job is relaunched. Do not run two jobs writing to the same tuning CSV at
+the same time.
+
+Useful Sirius variants:
+
+```bash
+sbatch --export=ALL,METHODS=asl scripts/run_sirius_tuning.sh
+sbatch --export=ALL,METHODS=geoloss,schwartz_geosmooth scripts/run_sirius_tuning.sh
+sbatch --export=ALL,LIMIT=10 scripts/run_sirius_tuning.sh
+sbatch --export=ALL,MAX_SAMPLES=128,LIMIT=2 scripts/run_sirius_tuning.sh
+```
+
+By default, tuning does not save checkpoints or Hugging Face model bundles,
+because the selection signal is the validation CSV. If checkpoints are needed
+for debugging, use `SAVE_CHECKPOINTS=1`; only use `SAVE_HF_MODEL=1` if model
+bundles are explicitly needed.
 
 Select hyperparameters using validation metrics only. Prioritize Macro-F1, then
 Macro-AUPRC, then circular-error metrics as tie-breakers.
+
+The default maximum is `30` epochs with early stopping. If a tuning run was
+started with an older lower epoch cap, restart from a clean tuning CSV; otherwise
+the resume logic will skip completed rows from the old protocol.
 
 ### 4. Freeze Final Configs
 
@@ -271,12 +345,20 @@ eps: {1.0e-8}
 ```
 
 After selecting the best ASL setting, freeze it before the final five-seed
-comparison. Do not retune ASL parameters on the test split.
+comparison. Also copy the selected ASL parameters into the structured loss
+configs before tuning `lambda_geo` or `tau`. Do not retune ASL parameters on the
+test split.
 
-The tuning script for this stage is:
+The direct local command for this stage is:
 
 ```bash
 python3 scripts/grid_loss_hparams.py --methods asl
+```
+
+On Sirius, prefer:
+
+```bash
+sbatch --export=ALL,METHODS=asl scripts/run_sirius_tuning.sh
 ```
 
 ### Geometry-Aware Method Selection
@@ -317,13 +399,19 @@ For the random-geometry negative control, keep the random circular order fixed
 across training seeds unless explicitly running an additional random-order
 sensitivity analysis.
 
-Use:
+The direct local command is:
 
 ```bash
 python3 scripts/grid_loss_hparams.py --methods geoloss schwartz_geosmooth
 ```
 
-Use `--dry_run` to inspect the planned grid and `--max_samples` only for
+On Sirius, prefer:
+
+```bash
+sbatch --export=ALL,METHODS=geoloss,schwartz_geosmooth scripts/run_sirius_tuning.sh
+```
+
+Use `DRY_RUN=1` to inspect the planned grid and `MAX_SAMPLES` only for
 debugging.
 
 ## Final Stage

@@ -121,10 +121,23 @@ def build_deberta_model(
         config.id2label = {i: name for i, name in enumerate(label_names)}
         config.label2id = {name: i for i, name in enumerate(label_names)}
     LOGGER.debug("Initializing model for %s", model_name)
-    model = AutoModelForSequenceClassification.from_pretrained(
-        model_name,
-        config=config,
-    )
+    try:
+        model = AutoModelForSequenceClassification.from_pretrained(
+            model_name,
+            config=config,
+            use_safetensors=True,
+        )
+    except OSError as exc:
+        LOGGER.warning(
+            "Could not load %s with safetensors (%s); retrying default loader. "
+            "If this fails on torch<2.6, upgrade torch or refresh the model cache.",
+            model_name,
+            exc,
+        )
+        model = AutoModelForSequenceClassification.from_pretrained(
+            model_name,
+            config=config,
+        )
     LOGGER.debug("Created multi-label classifier with %d labels", num_labels)
     return model, tokenizer
 

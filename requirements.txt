@@ -2,8 +2,9 @@ numpy
 pandas
 pyyaml
 transformers>=4.50.0
+safetensors
 accelerate
 sentencepiece
 protobuf
-# For GPU PyTorch (CUDA 12.2), install with:
-# pip install torch --index-url https://download.pytorch.org/whl/cu122
+# Install GPU PyTorch separately for the target cluster.
+# Transformers may require torch>=2.6 when falling back to PyTorch .bin files.

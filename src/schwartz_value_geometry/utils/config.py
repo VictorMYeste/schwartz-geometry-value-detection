@@ -35,7 +35,7 @@ DEFAULTS: dict[str, Any] = {
     },
     "training": {
         "batch_size": 8,
-        "num_epochs": 20,
+        "num_epochs": 30,
         "learning_rate": 1e-5,
         "weight_decay": 0.15,
         "max_length": 1024,
