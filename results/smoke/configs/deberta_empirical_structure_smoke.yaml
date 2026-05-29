@@ -1,0 +1,14 @@
+loss:
+  name: empirical_structure
+  base: asl
+  lambda_geo: 0.05
+  empirical_metric: jaccard
+results_dir: /home/vicyesmo@upvnet.upv.es/schwartz-geometry-value-detection/results/smoke
+save_checkpoints: true
+training:
+  num_epochs: 1
+  batch_size: 2
+  max_length: 256
+  grad_accum_steps: 1
+  early_stopping_patience: 0
+  save_hf_model: false

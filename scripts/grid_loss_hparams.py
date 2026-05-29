@@ -222,6 +222,14 @@ def _parse_args() -> argparse.Namespace:
         help="CSV path to store tuning results.",
     )
     parser.add_argument(
+        "--results_dir",
+        default=None,
+        help=(
+            "Optional results directory for tuning artifacts. When omitted, each "
+            "base config decides its own results_dir."
+        ),
+    )
+    parser.add_argument(
         "--limit",
         type=int,
         default=None,
@@ -232,6 +240,16 @@ def _parse_args() -> argparse.Namespace:
         type=int,
         default=1,
         help="Retries for runs flagged as collapsed.",
+    )
+    parser.add_argument(
+        "--save_checkpoints",
+        action="store_true",
+        help="Persist checkpoints during tuning. Disabled by default to save disk.",
+    )
+    parser.add_argument(
+        "--save_hf_model",
+        action="store_true",
+        help="Persist Hugging Face model bundles when checkpoints are enabled.",
     )
     parser.add_argument(
         "--dry_run",
@@ -270,6 +288,13 @@ def main() -> None:
         len(pending),
         len(completed_keys),
     )
+    LOGGER.info(
+        "Tuning output=%s results_dir=%s save_checkpoints=%s save_hf_model=%s",
+        output_path,
+        args.results_dir or "<config default>",
+        bool(args.save_checkpoints),
+        bool(args.save_hf_model),
+    )
 
     if args.dry_run:
         for run in pending:
@@ -299,6 +324,12 @@ def main() -> None:
             )
             config = apply_loss_params(base_config, run.params)
             config["seed"] = run.seed
+            if args.results_dir is not None:
+                config["results_dir"] = args.results_dir
+            config["save_checkpoints"] = bool(args.save_checkpoints)
+            training_cfg = dict(config.get("training", {}))
+            training_cfg["save_hf_model"] = bool(args.save_hf_model)
+            config["training"] = training_cfg
             if args.max_samples is not None:
                 config["max_samples"] = int(args.max_samples)
 

@@ -43,7 +43,9 @@ export HF_TOKEN
 if [ ! -x "$PYTHON_BIN" ]; then
   echo "Missing venv Python: $PYTHON_BIN" >&2
   echo "Either create/activate .venv from a login session, or run:" >&2
-  echo "  sbatch --export=ALL,BASE_PYTHON=/path/to/python3.11 scripts/bootstrap_slurm_venv.sh" >&2
+  echo "  sbatch scripts/bootstrap_slurm_venv.sh" >&2
+  echo "If auto-detection fails, pass a real Python path with:" >&2
+  echo "  sbatch --export=ALL,BASE_PYTHON=/real/path/to/python3.11 scripts/bootstrap_slurm_venv.sh" >&2
   exit 1
 fi
 
