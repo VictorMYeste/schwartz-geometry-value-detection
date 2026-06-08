@@ -1,0 +1,8 @@
+loss:
+  name: schwartz_geosmooth
+  base: asl
+  gamma_pos: 0.0
+  gamma_neg: 2.0
+  clip: 0.0
+  eps: 1.0e-8
+  tau: 0.1

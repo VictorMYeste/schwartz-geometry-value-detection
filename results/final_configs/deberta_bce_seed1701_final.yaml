@@ -1,0 +1,5 @@
+results_dir: /home/hpc/34045staff/schwartz-geometry-value-detection/results
+save_checkpoints: true
+training:
+  save_hf_model: false
+  checkpoint_every_epochs: 0

@@ -1,0 +1,9 @@
+comparison,metric,mean_delta_schwartz_minus_control,mean_schwartz_improvement,significant_seeds,max_p_value,min_improvement_ci_low,max_improvement_ci_high
+schwartz_vs_empirical,decoder_geometry_cost,-0.0148,+0.0148,5/5,<0.001,+0.0074,+0.0231
+schwartz_vs_empirical,opposite_error_rate,-0.0028,+0.0028,4/5,0.959,-0.0024,+0.0068
+schwartz_vs_empirical,macro_f1,+0.0008,+0.0008,0/5,0.785,-0.0016,+0.0036
+schwartz_vs_empirical,micro_f1,+0.0002,+0.0002,0/5,0.799,-0.0017,+0.0023
+schwartz_vs_random,decoder_geometry_cost,-0.0145,+0.0145,5/5,<0.001,+0.0074,+0.0231
+schwartz_vs_random,opposite_error_rate,-0.0027,+0.0027,4/5,0.959,-0.0024,+0.0070
+schwartz_vs_random,macro_f1,+0.0008,+0.0008,0/5,0.832,-0.0017,+0.0036
+schwartz_vs_random,micro_f1,+0.0002,+0.0002,0/5,0.765,-0.0017,+0.0024

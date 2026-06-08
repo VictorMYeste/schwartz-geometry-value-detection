@@ -1,0 +1,19 @@
+results_dir: results/llm_diagnostic
+
+model:
+  family: qwen
+  name: Qwen/Qwen2.5-72B-Instruct
+
+llm:
+  prompt_type: schwartz_continuum
+  temperature: 0.0
+  top_p: 1.0
+  max_tokens: 128
+  max_prompt_tokens: 4096
+  device: cuda
+  quantization: 4bit
+  int8_fp32_cpu_offload: false
+  trust_remote_code: false
+  log_prompts: true
+  log_prompts_n: 1
+  log_prompt_max_chars: 12000

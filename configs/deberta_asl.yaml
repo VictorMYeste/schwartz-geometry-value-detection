@@ -1,6 +1,6 @@
 loss:
   name: asl
   gamma_pos: 0.0
-  gamma_neg: 4.0
-  clip: 0.05
+  gamma_neg: 2.0
+  clip: 0.0
   eps: 1.0e-8

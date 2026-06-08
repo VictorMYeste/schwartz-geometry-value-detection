@@ -1,0 +1,447 @@
+{
+  "micro_f1": 0.3293882789105946,
+  "macro_f1": 0.2862243049772997,
+  "per_label_f1": {
+    "Self-direction: thought": 0.09782608695652174,
+    "Self-direction: action": 0.1536189069423929,
+    "Stimulation": 0.2651356993736952,
+    "Hedonism": 0.32432432432432434,
+    "Achievement": 0.3483324510322922,
+    "Power: dominance": 0.31983527796842826,
+    "Power: resources": 0.32225300092336107,
+    "Face": 0.25,
+    "Security: personal": 0.29716981132075476,
+    "Security: societal": 0.4207687120701281,
+    "Tradition": 0.44061302681992337,
+    "Conformity: rules": 0.4575971731448763,
+    "Conformity: interpersonal": 0.16182572614107882,
+    "Humility": 0.045662100456621,
+    "Benevolence: caring": 0.20867768595041322,
+    "Benevolence: dependability": 0.2368815592203898,
+    "Universalism: concern": 0.3369752731454859,
+    "Universalism: nature": 0.5689467969598263,
+    "Universalism: tolerance": 0.18181818181818185
+  },
+  "per_label_support": {
+    "Self-direction: thought": {
+      "gold": 171.0,
+      "pred": 381.0,
+      "gold_rate": 0.011473429951690822,
+      "pred_rate": 0.025563607085346215
+    },
+    "Self-direction: action": {
+      "gold": 486.0,
+      "pred": 868.0,
+      "gold_rate": 0.03260869565217391,
+      "pred_rate": 0.058239398819108966
+    },
+    "Stimulation": {
+      "gold": 420.0,
+      "pred": 538.0,
+      "gold_rate": 0.02818035426731079,
+      "pred_rate": 0.036097691894793345
+    },
+    "Hedonism": {
+      "gold": 100.0,
+      "pred": 159.0,
+      "gold_rate": 0.0067096081588835215,
+      "pred_rate": 0.0106682769726248
+    },
+    "Achievement": {
+      "gold": 950.0,
+      "pred": 939.0,
+      "gold_rate": 0.06374127750939346,
+      "pred_rate": 0.06300322061191627
+    },
+    "Power: dominance": {
+      "gold": 656.0,
+      "pred": 801.0,
+      "gold_rate": 0.0440150295222759,
+      "pred_rate": 0.05374396135265701
+    },
+    "Power: resources": {
+      "gold": 724.0,
+      "pred": 1442.0,
+      "gold_rate": 0.048577563070316694,
+      "pred_rate": 0.09675254965110038
+    },
+    "Face": {
+      "gold": 283.0,
+      "pred": 261.0,
+      "gold_rate": 0.018988191089640366,
+      "pred_rate": 0.017512077294685992
+    },
+    "Security: personal": {
+      "gold": 278.0,
+      "pred": 570.0,
+      "gold_rate": 0.01865271068169619,
+      "pred_rate": 0.038244766505636074
+    },
+    "Security: societal": {
+      "gold": 1261.0,
+      "pred": 1705.0,
+      "gold_rate": 0.0846081588835212,
+      "pred_rate": 0.11439881910896403
+    },
+    "Tradition": {
+      "gold": 274.0,
+      "pred": 248.0,
+      "gold_rate": 0.018384326355340846,
+      "pred_rate": 0.016639828234031134
+    },
+    "Conformity: rules": {
+      "gold": 956.0,
+      "pred": 1308.0,
+      "gold_rate": 0.06414385399892646,
+      "pred_rate": 0.08776167471819646
+    },
+    "Conformity: interpersonal": {
+      "gold": 204.0,
+      "pred": 278.0,
+      "gold_rate": 0.013687600644122383,
+      "pred_rate": 0.01865271068169619
+    },
+    "Humility": {
+      "gold": 43.0,
+      "pred": 176.0,
+      "gold_rate": 0.002885131508319914,
+      "pred_rate": 0.011808910359634998
+    },
+    "Benevolence: caring": {
+      "gold": 342.0,
+      "pred": 626.0,
+      "gold_rate": 0.022946859903381644,
+      "pred_rate": 0.04200214707461084
+    },
+    "Benevolence: dependability": {
+      "gold": 288.0,
+      "pred": 379.0,
+      "gold_rate": 0.01932367149758454,
+      "pred_rate": 0.025429414922168544
+    },
+    "Universalism: concern": {
+      "gold": 671.0,
+      "pred": 1068.0,
+      "gold_rate": 0.045021470746108426,
+      "pred_rate": 0.071658615136876
+    },
+    "Universalism: nature": {
+      "gold": 383.0,
+      "pred": 538.0,
+      "gold_rate": 0.025697799248523886,
+      "pred_rate": 0.036097691894793345
+    },
+    "Universalism: tolerance": {
+      "gold": 121.0,
+      "pred": 143.0,
+      "gold_rate": 0.00811862587224906,
+      "pred_rate": 0.009594739667203435
+    }
+  },
+  "macro_auprc": 0.21315786583970034,
+  "micro_auprc": 0.26014595062058343,
+  "per_label_auprc": {
+    "Self-direction: thought": 0.04074248608101764,
+    "Self-direction: action": 0.09796824151572375,
+    "Stimulation": 0.2065478638395052,
+    "Hedonism": 0.22820526661944207,
+    "Achievement": 0.2878757341634815,
+    "Power: dominance": 0.25409913271401546,
+    "Power: resources": 0.2293282326861641,
+    "Face": 0.15101193390694137,
+    "Security: personal": 0.20433978462920532,
+    "Security: societal": 0.36623225346569765,
+    "Tradition": 0.3464532164188594,
+    "Conformity: rules": 0.4128087138421042,
+    "Conformity: interpersonal": 0.08921996727366438,
+    "Humility": 0.011423750572866936,
+    "Benevolence: caring": 0.12203330168356412,
+    "Benevolence: dependability": 0.15358656115793715,
+    "Universalism: concern": 0.294555697689355,
+    "Universalism: nature": 0.46412766068681105,
+    "Universalism: tolerance": 0.08943965200795063
+  },
+  "circular_error": 0.13531568604029515,
+  "opposite_value_activation": 0.05035611514036581,
+  "neighbor_error_rate": 0.13332589534753989,
+  "opposite_error_rate": 0.6309271449291531,
+  "confusion_distance_correlation": -0.07332220200610622,
+  "threshold_tuning": {
+    "mode": "per_label",
+    "thresholds": [
+      0.11,
+      0.22,
+      0.35000000000000003,
+      0.25,
+      0.34,
+      0.31,
+      0.1,
+      0.38,
+      0.17,
+      0.36,
+      0.37,
+      0.18,
+      0.24,
+      0.02,
+      0.17,
+      0.19,
+      0.27,
+      0.16,
+      0.32
+    ],
+    "thresholds_by_label": {
+      "Self-direction: thought": 0.11,
+      "Self-direction: action": 0.22,
+      "Stimulation": 0.35000000000000003,
+      "Hedonism": 0.25,
+      "Achievement": 0.34,
+      "Power: dominance": 0.31,
+      "Power: resources": 0.1,
+      "Face": 0.38,
+      "Security: personal": 0.17,
+      "Security: societal": 0.36,
+      "Tradition": 0.37,
+      "Conformity: rules": 0.18,
+      "Conformity: interpersonal": 0.24,
+      "Humility": 0.02,
+      "Benevolence: caring": 0.17,
+      "Benevolence: dependability": 0.19,
+      "Universalism: concern": 0.27,
+      "Universalism: nature": 0.16,
+      "Universalism: tolerance": 0.32
+    },
+    "best_metrics": {
+      "micro_f1": 0.3293882789105946,
+      "macro_f1": 0.2862243049772997,
+      "per_label_f1": {
+        "Self-direction: thought": 0.09782608695652174,
+        "Self-direction: action": 0.1536189069423929,
+        "Stimulation": 0.2651356993736952,
+        "Hedonism": 0.32432432432432434,
+        "Achievement": 0.3483324510322922,
+        "Power: dominance": 0.31983527796842826,
+        "Power: resources": 0.32225300092336107,
+        "Face": 0.25,
+        "Security: personal": 0.29716981132075476,
+        "Security: societal": 0.4207687120701281,
+        "Tradition": 0.44061302681992337,
+        "Conformity: rules": 0.4575971731448763,
+        "Conformity: interpersonal": 0.16182572614107882,
+        "Humility": 0.045662100456621,
+        "Benevolence: caring": 0.20867768595041322,
+        "Benevolence: dependability": 0.2368815592203898,
+        "Universalism: concern": 0.3369752731454859,
+        "Universalism: nature": 0.5689467969598263,
+        "Universalism: tolerance": 0.18181818181818185
+      },
+      "per_label_support": {
+        "Self-direction: thought": {
+          "gold": 171.0,
+          "pred": 381.0,
+          "gold_rate": 0.011473429951690822,
+          "pred_rate": 0.025563607085346215
+        },
+        "Self-direction: action": {
+          "gold": 486.0,
+          "pred": 868.0,
+          "gold_rate": 0.03260869565217391,
+          "pred_rate": 0.058239398819108966
+        },
+        "Stimulation": {
+          "gold": 420.0,
+          "pred": 538.0,
+          "gold_rate": 0.02818035426731079,
+          "pred_rate": 0.036097691894793345
+        },
+        "Hedonism": {
+          "gold": 100.0,
+          "pred": 159.0,
+          "gold_rate": 0.0067096081588835215,
+          "pred_rate": 0.0106682769726248
+        },
+        "Achievement": {
+          "gold": 950.0,
+          "pred": 939.0,
+          "gold_rate": 0.06374127750939346,
+          "pred_rate": 0.06300322061191627
+        },
+        "Power: dominance": {
+          "gold": 656.0,
+          "pred": 801.0,
+          "gold_rate": 0.0440150295222759,
+          "pred_rate": 0.05374396135265701
+        },
+        "Power: resources": {
+          "gold": 724.0,
+          "pred": 1442.0,
+          "gold_rate": 0.048577563070316694,
+          "pred_rate": 0.09675254965110038
+        },
+        "Face": {
+          "gold": 283.0,
+          "pred": 261.0,
+          "gold_rate": 0.018988191089640366,
+          "pred_rate": 0.017512077294685992
+        },
+        "Security: personal": {
+          "gold": 278.0,
+          "pred": 570.0,
+          "gold_rate": 0.01865271068169619,
+          "pred_rate": 0.038244766505636074
+        },
+        "Security: societal": {
+          "gold": 1261.0,
+          "pred": 1705.0,
+          "gold_rate": 0.0846081588835212,
+          "pred_rate": 0.11439881910896403
+        },
+        "Tradition": {
+          "gold": 274.0,
+          "pred": 248.0,
+          "gold_rate": 0.018384326355340846,
+          "pred_rate": 0.016639828234031134
+        },
+        "Conformity: rules": {
+          "gold": 956.0,
+          "pred": 1308.0,
+          "gold_rate": 0.06414385399892646,
+          "pred_rate": 0.08776167471819646
+        },
+        "Conformity: interpersonal": {
+          "gold": 204.0,
+          "pred": 278.0,
+          "gold_rate": 0.013687600644122383,
+          "pred_rate": 0.01865271068169619
+        },
+        "Humility": {
+          "gold": 43.0,
+          "pred": 176.0,
+          "gold_rate": 0.002885131508319914,
+          "pred_rate": 0.011808910359634998
+        },
+        "Benevolence: caring": {
+          "gold": 342.0,
+          "pred": 626.0,
+          "gold_rate": 0.022946859903381644,
+          "pred_rate": 0.04200214707461084
+        },
+        "Benevolence: dependability": {
+          "gold": 288.0,
+          "pred": 379.0,
+          "gold_rate": 0.01932367149758454,
+          "pred_rate": 0.025429414922168544
+        },
+        "Universalism: concern": {
+          "gold": 671.0,
+          "pred": 1068.0,
+          "gold_rate": 0.045021470746108426,
+          "pred_rate": 0.071658615136876
+        },
+        "Universalism: nature": {
+          "gold": 383.0,
+          "pred": 538.0,
+          "gold_rate": 0.025697799248523886,
+          "pred_rate": 0.036097691894793345
+        },
+        "Universalism: tolerance": {
+          "gold": 121.0,
+          "pred": 143.0,
+          "gold_rate": 0.00811862587224906,
+          "pred_rate": 0.009594739667203435
+        }
+      },
+      "macro_auprc": 0.21315786583970034,
+      "micro_auprc": 0.26014595062058343,
+      "per_label_auprc": {
+        "Self-direction: thought": 0.04074248608101764,
+        "Self-direction: action": 0.09796824151572375,
+        "Stimulation": 0.2065478638395052,
+        "Hedonism": 0.22820526661944207,
+        "Achievement": 0.2878757341634815,
+        "Power: dominance": 0.25409913271401546,
+        "Power: resources": 0.2293282326861641,
+        "Face": 0.15101193390694137,
+        "Security: personal": 0.20433978462920532,
+        "Security: societal": 0.36623225346569765,
+        "Tradition": 0.3464532164188594,
+        "Conformity: rules": 0.4128087138421042,
+        "Conformity: interpersonal": 0.08921996727366438,
+        "Humility": 0.011423750572866936,
+        "Benevolence: caring": 0.12203330168356412,
+        "Benevolence: dependability": 0.15358656115793715,
+        "Universalism: concern": 0.294555697689355,
+        "Universalism: nature": 0.46412766068681105,
+        "Universalism: tolerance": 0.08943965200795063
+      },
+      "circular_error": 0.13531568604029515,
+      "opposite_value_activation": 0.05035611514036581,
+      "neighbor_error_rate": 0.13332589534753989,
+      "opposite_error_rate": 0.6309271449291531,
+      "confusion_distance_correlation": -0.07332220200610622
+    }
+  },
+  "meta": {
+    "model_name": "microsoft/deberta-v3-base",
+    "loss": {
+      "name": "random_geoloss",
+      "base": {
+        "name": "asl",
+        "gamma_pos": 0.0,
+        "gamma_neg": 2.0,
+        "clip": 0.0,
+        "eps": 1e-08
+      },
+      "lambda_geo": 0.2,
+      "lambda_conflict": 0.0,
+      "distance_power": 1.0,
+      "geometry": "random_circular",
+      "random_seed": 42,
+      "random_order": [
+        "Benevolence: caring",
+        "Security: societal",
+        "Universalism: nature",
+        "Face",
+        "Conformity: interpersonal",
+        "Tradition",
+        "Power: resources",
+        "Universalism: tolerance",
+        "Hedonism",
+        "Self-direction: thought",
+        "Benevolence: dependability",
+        "Power: dominance",
+        "Conformity: rules",
+        "Stimulation",
+        "Achievement",
+        "Universalism: concern",
+        "Self-direction: action",
+        "Humility",
+        "Security: personal"
+      ]
+    },
+    "input": "sentence",
+    "seed": 11,
+    "split": "validation",
+    "threshold": {
+      "Self-direction: thought": 0.11,
+      "Self-direction: action": 0.22,
+      "Stimulation": 0.35000000000000003,
+      "Hedonism": 0.25,
+      "Achievement": 0.34,
+      "Power: dominance": 0.31,
+      "Power: resources": 0.1,
+      "Face": 0.38,
+      "Security: personal": 0.17,
+      "Security: societal": 0.36,
+      "Tradition": 0.37,
+      "Conformity: rules": 0.18,
+      "Conformity: interpersonal": 0.24,
+      "Humility": 0.02,
+      "Benevolence: caring": 0.17,
+      "Benevolence: dependability": 0.19,
+      "Universalism: concern": 0.27,
+      "Universalism: nature": 0.16,
+      "Universalism: tolerance": 0.32
+    },
+    "threshold_source": "tuned_per_label"
+  }
+}

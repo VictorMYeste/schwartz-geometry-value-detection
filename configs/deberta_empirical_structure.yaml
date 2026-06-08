@@ -1,5 +1,4 @@
 loss:
   name: empirical_structure
-  base: asl
-  lambda_geo: 0.05
+  lambda_geo: 0.01
   empirical_metric: jaccard

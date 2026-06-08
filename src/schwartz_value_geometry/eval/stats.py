@@ -58,7 +58,7 @@ def paired_bootstrap_delta(
     delta_obs = metric_fn(y_true, y_pred_a) - metric_fn(y_true, y_pred_b)
     ci_low = float(np.quantile(deltas, alpha / 2))
     ci_high = float(np.quantile(deltas, 1 - alpha / 2))
-    p_value = float(2 * min((deltas <= 0).mean(), (deltas >= 0).mean()))
+    p_value = min(1.0, float(2 * min((deltas <= 0).mean(), (deltas >= 0).mean())))
 
     LOGGER.debug(
         "Bootstrap delta=%.4f CI=[%.4f, %.4f] p=%.4f",
@@ -114,7 +114,7 @@ def paired_permutation_test(
         perm_b[mask] = y_pred_a[mask]
         deltas[i] = metric_fn(y_true, perm_a) - metric_fn(y_true, perm_b)
 
-    p_value = float(2 * min((deltas <= 0).mean(), (deltas >= 0).mean()))
+    p_value = min(1.0, float(2 * min((deltas <= 0).mean(), (deltas >= 0).mean())))
 
     LOGGER.debug("Permutation delta=%.4f p=%.4f", delta_obs, p_value)
 

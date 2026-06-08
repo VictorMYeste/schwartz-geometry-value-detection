@@ -1,4 +1,3 @@
 loss:
   name: schwartz_geoloss
-  base: asl
-  lambda_geo: 0.05
+  lambda_geo: 0.01

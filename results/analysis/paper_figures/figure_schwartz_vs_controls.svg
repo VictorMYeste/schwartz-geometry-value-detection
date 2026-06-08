@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="360" viewBox="0 0 900 360">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;font-size:13px;}.small{font-size:11px;} .title{font-size:15px;font-weight:bold;}</style>
+<text class="title" x="258.5" y="22" text-anchor="middle">Opposite-error reduction</text>
+<line x1="70" y1="217.0" x2="447" y2="217.0" stroke="#222" stroke-width="1"/>
+<line x1="70" y1="42" x2="70" y2="292" stroke="#333" stroke-width="1"/>
+<text class="small" x="62" y="66.2" text-anchor="end">0.007</text>
+<text class="small" x="62" y="267.8" text-anchor="end">-0.002</text>
+<rect x="86.0" y="157.8" width="164.5" height="59.3" fill="#7a7f87"/>
+<line x1="168.2" y1="267.8" x2="168.2" y2="66.2" stroke="#111" stroke-width="1.2"/>
+<line x1="163.2" y1="267.8" x2="173.2" y2="267.8" stroke="#111" stroke-width="1.2"/>
+<line x1="163.2" y1="66.2" x2="173.2" y2="66.2" stroke="#111" stroke-width="1.2"/>
+<text class="small" x="168.2" y="318" text-anchor="middle" transform="rotate(-20 168.2 318)">vs Random</text>
+<text class="small" x="168.2" y="151.8" text-anchor="middle">+0.003</text>
+<rect x="266.5" y="156.0" width="164.5" height="61.0" fill="#b07d2f"/>
+<line x1="348.8" y1="267.8" x2="348.8" y2="69.2" stroke="#111" stroke-width="1.2"/>
+<line x1="343.8" y1="267.8" x2="353.8" y2="267.8" stroke="#111" stroke-width="1.2"/>
+<line x1="343.8" y1="69.2" x2="353.8" y2="69.2" stroke="#111" stroke-width="1.2"/>
+<text class="small" x="348.8" y="318" text-anchor="middle" transform="rotate(-20 348.8 318)">vs Empirical</text>
+<text class="small" x="348.8" y="150.0" text-anchor="middle">+0.003</text>
+<text x="18" y="167.0" text-anchor="middle" transform="rotate(-90 18 167.0)">Schwartz improvement over control</text>
+<text class="title" x="681.5" y="22" text-anchor="middle">Geometry-cost reduction</text>
+<line x1="493" y1="267.8" x2="870" y2="267.8" stroke="#222" stroke-width="1"/>
+<line x1="493" y1="42" x2="493" y2="292" stroke="#333" stroke-width="1"/>
+<text class="small" x="485" y="66.2" text-anchor="end">0.023</text>
+<text class="small" x="485" y="267.8" text-anchor="end">0.000</text>
+<rect x="509.0" y="141.2" width="164.5" height="126.6" fill="#7a7f87"/>
+<line x1="591.2" y1="203.4" x2="591.2" y2="66.2" stroke="#111" stroke-width="1.2"/>
+<line x1="586.2" y1="203.4" x2="596.2" y2="203.4" stroke="#111" stroke-width="1.2"/>
+<line x1="586.2" y1="66.2" x2="596.2" y2="66.2" stroke="#111" stroke-width="1.2"/>
+<text class="small" x="591.2" y="318" text-anchor="middle" transform="rotate(-20 591.2 318)">vs Random</text>
+<text class="small" x="591.2" y="135.2" text-anchor="middle">+0.014</text>
+<rect x="689.5" y="138.2" width="164.5" height="129.6" fill="#b07d2f"/>
+<line x1="771.8" y1="203.4" x2="771.8" y2="66.2" stroke="#111" stroke-width="1.2"/>
+<line x1="766.8" y1="203.4" x2="776.8" y2="203.4" stroke="#111" stroke-width="1.2"/>
+<line x1="766.8" y1="66.2" x2="776.8" y2="66.2" stroke="#111" stroke-width="1.2"/>
+<text class="small" x="771.8" y="318" text-anchor="middle" transform="rotate(-20 771.8 318)">vs Empirical</text>
+<text class="small" x="771.8" y="132.2" text-anchor="middle">+0.015</text>
+</svg>

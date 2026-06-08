@@ -1,0 +1,14 @@
+loss:
+  name: random_geoloss
+  base: asl
+  gamma_pos: 0.0
+  gamma_neg: 2.0
+  clip: 0.0
+  eps: 1.0e-08
+  lambda_geo: 0.2
+  random_seed: 42
+results_dir: /home/hpc/34045staff/schwartz-geometry-value-detection/results
+save_checkpoints: true
+training:
+  save_hf_model: false
+  checkpoint_every_epochs: 0
