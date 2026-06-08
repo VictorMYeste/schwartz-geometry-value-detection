@@ -2,9 +2,9 @@
 #SBATCH --job-name=sgvd-tune
 #SBATCH --partition=gpu
 #SBATCH --gpus=1
-#SBATCH --cpus-per-task=2
-#SBATCH --mem=8G
-#SBATCH --time=00:15:00
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --time=96:00:00
 #SBATCH --output=/lustre/scratch/%u/schwartz-geometry-value-detection/logs/%x-%j.out
 #SBATCH --error=/lustre/scratch/%u/schwartz-geometry-value-detection/logs/%x-%j.err
 #SBATCH --hint=nomultithread

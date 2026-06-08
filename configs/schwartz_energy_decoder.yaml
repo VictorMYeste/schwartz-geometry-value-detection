@@ -1,0 +1,60 @@
+# Frozen post-hoc decoder used for the main structured-prediction analysis.
+#
+# This is not a training config. It documents the final decoder applied to the
+# five BCE DeBERTa-v3-base runs after validation-threshold tuning.
+base_method: bce
+model_slug: deberta-v3-base
+
+source_predictions_dir: results/predictions
+source_logs_dir: results/logs
+decoder_output_dir: results/analysis/schwartz_energy_decoder_bootstrap_examples_full
+control_bootstrap_output_dir: results/analysis/schwartz_energy_decoder_control_bootstrap
+
+geometries:
+  - schwartz
+  - random
+  - empirical
+families:
+  - full
+objectives:
+  - standard
+  - pareto_99
+
+selection:
+  objective: pareto_99
+  selected_on: validation
+  primary_constraint: keep validation macro-F1 within 99% of standard thresholding
+  secondary_objective: minimize decoder_geometry_cost
+
+decoder:
+  alpha_values:
+    - 0.10
+  beta_values:
+    - 0.20
+  gamma_values:
+    - 0.02
+  top_k: 8
+  max_candidates: 8
+  max_labels: 5
+  threshold_factor: 0.5
+  min_prob: 0.01
+  marginal_temperature: 1.0
+  neighbor_steps: 2
+  random_seed: 42
+  empirical_metric: jaccard
+
+bootstrap:
+  iterations: 2000
+  seed: 42
+  standard_comparison_metrics:
+    - macro_f1
+    - micro_f1
+    - decoder_geometry_cost
+  control_comparison_metrics:
+    - macro_f1
+    - micro_f1
+    - opposite_error_rate
+    - decoder_geometry_cost
+  controls:
+    - random
+    - empirical

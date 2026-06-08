@@ -1,0 +1,3 @@
+method,seed,base_config,params_json,gamma_pos,gamma_neg,clip,lambda_geo,tau,random_seed,best_macro_f1,collapsed,run_name
+asl,42,configs/deberta_asl.yaml,"{""clip"":0.0,""gamma_neg"":2.0,""gamma_pos"":0.0}",0.0,2.0,0.0,,,,0.259008908265183,False,tune_deberta_asl_seed42_gamma_pos0p0_gamma_neg2p0_clip0p0
+asl,42,configs/deberta_asl.yaml,"{""clip"":0.03,""gamma_neg"":2.0,""gamma_pos"":0.0}",0.0,2.0,0.03,,,,0.2738353918357971,False,tune_deberta_asl_seed42_gamma_pos0p0_gamma_neg2p0_clip0p03

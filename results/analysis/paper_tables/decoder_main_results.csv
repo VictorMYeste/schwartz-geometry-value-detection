@@ -1,0 +1,5 @@
+condition,geometry,macro_f1,micro_f1,opposite_error_rate,decoder_geometry_cost,delta_macro_f1_vs_threshold,delta_decoder_geometry_cost_vs_threshold
+BCE thresholding,none,0.2934 +/- 0.0037,0.3425 +/- 0.0060,0.5092 +/- 0.0096,0.5634 +/- 0.0120,0.0000,0.0000
+Empirical decoder,empirical,0.2935 +/- 0.0037,0.3428 +/- 0.0063,0.5100 +/- 0.0092,0.5628 +/- 0.0119,+0.0001,-0.0005
+Random decoder,random,0.2935 +/- 0.0038,0.3429 +/- 0.0062,0.5099 +/- 0.0091,0.5625 +/- 0.0115,+0.0001,-0.0009
+Schwartz decoder,schwartz,0.2943 +/- 0.0034,0.3430 +/- 0.0063,0.5072 +/- 0.0098,0.5480 +/- 0.0130,+0.0010,-0.0154

@@ -1,5 +1,4 @@
 loss:
   name: random_geoloss
-  base: asl
-  lambda_geo: 0.05
+  lambda_geo: 0.01
   random_seed: 42

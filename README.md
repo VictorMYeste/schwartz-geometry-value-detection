@@ -183,6 +183,139 @@ Aggregate trained seed results into paper-ready CSVs:
 python3 scripts/aggregate_results.py
 ```
 
+Run paired seed-level bootstrap tests against BCE:
+
+```bash
+python3 scripts/bootstrap_seed_significance.py \
+  --seed_level_csv results/analysis/paper_tables/seed_level_results.csv \
+  --output results/analysis/paper_tables/bootstrap_seed_significance.csv \
+  --baseline bce \
+  --n_iterations 2000
+```
+
+Run the validation-only geometry-aware calibration diagnostic:
+
+```bash
+python3 scripts/geometry_aware_calibration.py \
+  --predictions_dir results/predictions \
+  --logs_dir results/logs \
+  --output_dir results/analysis/geometry_calibration
+```
+
+This does not retrain models. It searches a small calibration grid on
+validation predictions, applies the selected settings to test predictions, and
+writes seed-level and mean/std CSVs for Pareto analysis.
+
+Run the Schwartz structured energy decoder over the final BCE probabilities:
+
+```bash
+python3 scripts/schwartz_energy_decoder.py \
+  --predictions_dir results/predictions \
+  --logs_dir results/logs \
+  --output_dir results/analysis/schwartz_energy_decoder
+```
+
+The decoder keeps the trained classifier fixed, but predicts the final label
+set jointly. It rewards nearby Schwartz values, penalizes opposite-value
+co-activation, applies a small cardinality penalty, tunes those weights on
+validation, and applies the selected decoder once to test.
+
+Run the decoder controls and ablations:
+
+```bash
+python3 scripts/schwartz_energy_decoder.py \
+  --bootstrap_iterations 0 \
+  --max_error_examples 0 \
+  --output_dir results/analysis/schwartz_energy_decoder_controls
+```
+
+This evaluates Schwartz, random circular, and empirical co-occurrence
+geometries with cardinality-only, neighbor-only, opposite-only,
+neighbor+opposite, and full decoder families.
+
+Run targeted sample-level bootstrap and error analysis:
+
+```bash
+python3 scripts/schwartz_energy_decoder.py \
+  --geometries schwartz random empirical \
+  --families full \
+  --objectives standard pareto_99 \
+  --bootstrap_iterations 2000 \
+  --bootstrap_metrics macro_f1 micro_f1 \
+  --max_error_examples 25 \
+  --output_dir results/analysis/schwartz_energy_decoder_bootstrap_examples
+```
+
+The full decoder-geometry-cost bootstrap is also supported, but it is slower;
+run it on the cluster by adding `decoder_geometry_cost` to
+`--bootstrap_metrics`.
+
+On UEV, submit the 2000-iteration bootstrap including geometry cost with:
+
+```bash
+sbatch scripts/run_uev_energy_decoder_bootstrap.sh
+```
+
+Inspect the command without submitting work from a login session with:
+
+```bash
+DRY_RUN=1 bash scripts/run_uev_energy_decoder_bootstrap.sh
+```
+
+After the full decoder bootstrap has been produced, run the direct
+Schwartz-vs-control bootstrap:
+
+```bash
+python3 scripts/bootstrap_energy_decoder_controls.py \
+  --decoder_output_dir results/analysis/schwartz_energy_decoder_bootstrap_examples_full \
+  --output_dir results/analysis/schwartz_energy_decoder_control_bootstrap
+```
+
+This tests the paper-critical contrast between the Schwartz decoder and the
+random/empirical controls directly. On UEV, use:
+
+```bash
+DRY_RUN=1 bash scripts/run_uev_energy_decoder_control_bootstrap.sh
+sbatch scripts/run_uev_energy_decoder_control_bootstrap.sh
+```
+
+The frozen decoder configuration is documented in
+`configs/schwartz_energy_decoder.yaml`.
+
+After the decoder and control-bootstrap outputs are complete, build the
+paper-ready decoder tables, SVG figures, and curated qualitative examples with:
+
+```bash
+python3 scripts/make_decoder_paper_assets.py
+```
+
+Run the Qwen2.5-72B-Instruct LLM diagnostic with two prompt conditions:
+
+```bash
+python3 scripts/run_qwen_llm_diagnostic.py \
+  --config configs/llm_qwen_definitions_only.yaml \
+  --split test \
+  --eval
+
+python3 scripts/run_qwen_llm_diagnostic.py \
+  --config configs/llm_qwen_schwartz_continuum.yaml \
+  --split test \
+  --eval
+```
+
+On UEV, run both prompt conditions over the full test split with:
+
+```bash
+DRY_RUN=1 bash scripts/run_uev_qwen_llm_diagnostic.sh
+sbatch scripts/run_uev_qwen_llm_diagnostic.sh
+```
+
+After both LLM runs finish, generate the paper table and SVG figure:
+
+```bash
+python3 scripts/make_llm_diagnostic_assets.py
+```
+
 Run the Sirius development smoke job:
 
 ```bash

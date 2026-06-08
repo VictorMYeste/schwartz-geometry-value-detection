@@ -1,0 +1,3 @@
+method,supervision,schwartz_theory,macro_f1,micro_f1,opposite_error_rate,decoder_geometry_cost,invalid_output_rate,repaired_output_rate,empty_prediction_rate,avg_predicted_labels,n_samples,source
+BCE thresholding,fine-tuned,no,0.2934,0.3425,0.5092,0.5634,-,-,-,-,,results/analysis/paper_tables/decoder_main_results.csv
+BCE + Schwartz decoder,fine-tuned,decoder,0.2943,0.3430,0.5072,0.5480,-,-,-,-,,results/analysis/paper_tables/decoder_main_results.csv
