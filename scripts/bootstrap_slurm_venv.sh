@@ -117,4 +117,30 @@ echo "Bootstrap complete:"
 "$PYTHON_BIN" -V
 configure_cuda_lib_path
 "$PYTHON_BIN" -c "import torch; print('torch', torch.__version__)"
+"$PYTHON_BIN" - <<'PY'
+import importlib.metadata as meta
+
+
+def parse_version(raw: str) -> tuple[int, int, int]:
+    parts = []
+    for token in raw.replace("-", ".").split("."):
+        if token.isdigit():
+            parts.append(int(token))
+        else:
+            digits = "".join(ch for ch in token if ch.isdigit())
+            if digits:
+                parts.append(int(digits))
+        if len(parts) == 3:
+            break
+    while len(parts) < 3:
+        parts.append(0)
+    return tuple(parts)
+
+
+for pkg in ("transformers", "accelerate", "safetensors", "bitsandbytes"):
+    version = meta.version(pkg)
+    print(pkg, version)
+    if pkg == "bitsandbytes" and parse_version(version) < (0, 46, 1):
+        raise SystemExit("bitsandbytes>=0.46.1 is required for Qwen 4-bit inference")
+PY
 touch "$VENV_DIR/$VENV_READY_FILE"

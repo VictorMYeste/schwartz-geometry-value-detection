@@ -785,6 +785,12 @@ Use one main model in the paper:
 Qwen/Qwen2.5-72B-Instruct
 ```
 
+The 72B diagnostic uses 4-bit loading and requires at least two visible 24 GB
+GPUs, or an equivalent total visible GPU memory budget. With the current
+Transformers/bitsandbytes implementation, a single RTX 4090 is expected to fail
+because `device_map="auto"` would need to dispatch part of the quantized model to
+CPU or disk.
+
 Run two fixed prompt conditions over the full test split:
 
 - `definitions_only`: the model receives the 19 refined Schwartz labels and
@@ -828,8 +834,28 @@ DRY_RUN=1 bash scripts/run_uev_qwen_llm_diagnostic.sh
 sbatch scripts/run_uev_qwen_llm_diagnostic.sh
 ```
 
-The UEV launcher runs both prompt conditions, resumes partial JSONL prediction
-files, skips completed metrics files, and then runs:
+Full Sirius run:
+
+```bash
+DRY_RUN=1 bash scripts/run_sirius_qwen_llm_diagnostic.sh
+sbatch scripts/run_sirius_qwen_llm_diagnostic.sh
+```
+
+The Sirius launcher follows the Qwen2.5-72B setup used in the previous paper:
+`gpu` partition, 2 GPUs, 8 CPU threads, 128 GB RAM, and 96 hours. It expects the
+Sirius `.venv` to have been created with `scripts/bootstrap_slurm_venv.sh`, which
+also writes the `.venv/.bootstrap_complete` marker checked by the launcher.
+For 4-bit Qwen inference, the venv must include `bitsandbytes>=0.46.1`. If an
+older already-bootstrapped venv fails at model loading, update it from the Sirius
+login node with:
+
+```bash
+source .venv/bin/activate
+python -m pip install -U "bitsandbytes>=0.46.1"
+```
+
+The UEV and Sirius launchers run both prompt conditions, resume partial JSONL
+prediction files, skip completed metrics files, and then run:
 
 ```bash
 python3 scripts/make_llm_diagnostic_assets.py
@@ -853,6 +879,29 @@ Paper-facing outputs are:
 results/analysis/paper_tables/llm_diagnostic_results.csv
 results/analysis/paper_figures/figure_llm_diagnostic.svg
 ```
+
+Run the sample-level paired bootstrap for the LLM diagnostic with:
+
+```bash
+python3 scripts/bootstrap_llm_diagnostic.py \
+  --bootstrap_iterations 2000 \
+  --output_dir results/analysis/llm_diagnostic_bootstrap
+
+cp results/analysis/llm_diagnostic_bootstrap/llm_diagnostic_bootstrap_summary.csv \
+  results/analysis/paper_tables/llm_diagnostic_bootstrap_summary.csv
+cp results/analysis/llm_diagnostic_bootstrap/llm_diagnostic_sample_bootstrap.csv \
+  results/analysis/paper_tables/llm_diagnostic_sample_bootstrap.csv
+```
+
+The main-paper bootstrap comparisons are:
+
+- Qwen continuum vs Qwen definitions;
+- Qwen continuum vs BCE thresholding, tested against each BCE seed;
+- Qwen continuum vs BCE + Schwartz decoder, tested against each BCE seed.
+
+The script also writes definitions-vs-supervised contrasts for appendix or
+sanity checking. Metrics are `macro_f1`, `micro_f1`, `opposite_error_rate`, and
+`decoder_geometry_cost`.
 
 Report:
 

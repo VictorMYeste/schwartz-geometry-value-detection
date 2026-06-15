@@ -4,13 +4,11 @@
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=64
-#SBATCH --mem=124G
+#SBATCH --mem=128G
 #SBATCH --time=168:00:00
 #SBATCH --output=/home/hpc/34045staff/output/schwartz-geometry-value-detection/%x-%j.out
 #SBATCH --error=/home/hpc/34045staff/output/schwartz-geometry-value-detection/%x-%j.err
 #SBATCH --hint=nomultithread
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=victor.yeste@universidadeuropea.es
 
 set -euo pipefail
 
@@ -98,14 +96,38 @@ export OPENBLAS_NUM_THREADS="${SLURM_CPUS_PER_TASK:-64}"
 import importlib.metadata as meta
 import torch
 
+
+def parse_version(raw):
+    parts = []
+    for token in raw.replace("-", ".").split("."):
+        if token.isdigit():
+            parts.append(int(token))
+        else:
+            digits = "".join(ch for ch in token if ch.isdigit())
+            if digits:
+                parts.append(int(digits))
+        if len(parts) == 3:
+            break
+    while len(parts) < 3:
+        parts.append(0)
+    return tuple(parts)
+
+
 print("torch", torch.__version__, "cuda", torch.version.cuda)
 print("cuda_available", torch.cuda.is_available())
 if torch.cuda.is_available():
-    print("gpu", torch.cuda.get_device_name(0), "cc", torch.cuda.get_device_capability(0))
+    print("gpu_count", torch.cuda.device_count())
+    for idx in range(torch.cuda.device_count()):
+        print("gpu", idx, torch.cuda.get_device_name(idx), "cc", torch.cuda.get_device_capability(idx))
 for pkg in ("transformers", "accelerate", "bitsandbytes", "safetensors"):
     try:
-        print(pkg, meta.version(pkg))
+        version = meta.version(pkg)
+        print(pkg, version)
+        if pkg == "bitsandbytes" and parse_version(version) < (0, 46, 1):
+            raise SystemExit("bitsandbytes>=0.46.1 is required for Qwen 4-bit inference")
     except Exception:
+        if pkg == "bitsandbytes":
+            raise SystemExit("bitsandbytes>=0.46.1 is required for Qwen 4-bit inference")
         print(pkg, "<missing>")
 PY
 
@@ -114,13 +136,25 @@ mkdir -p "$LLM_RESULTS_DIR/predictions" "$LLM_RESULTS_DIR/logs"
 infer_paths() {
   local cfg_path="$1"
   "$PYTHON_BIN" - "$cfg_path" "$LLM_SPLIT" "$LLM_RESULTS_DIR" <<'PY'
+import importlib.util
+import logging
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path.cwd() / "src"))
+logging.disable(logging.CRITICAL)
+
 from schwartz_value_geometry.utils.config import load_config
-from scripts.run_qwen_llm_diagnostic import output_path_for
+
+script_path = Path.cwd() / "scripts" / "run_qwen_llm_diagnostic.py"
+spec = importlib.util.spec_from_file_location("run_qwen_llm_diagnostic", script_path)
+if spec is None or spec.loader is None:
+    raise SystemExit(f"Cannot import {script_path}")
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
 
 cfg = load_config(sys.argv[1])
-pred = output_path_for(cfg, split=sys.argv[2], output_dir=Path(sys.argv[3]))
+pred = module.output_path_for(cfg, split=sys.argv[2], output_dir=Path(sys.argv[3]))
 metrics = pred.parents[1] / "logs" / f"{pred.stem}_metrics.json"
 print(pred)
 print(metrics)

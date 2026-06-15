@@ -291,6 +291,10 @@ python3 scripts/make_decoder_paper_assets.py
 
 Run the Qwen2.5-72B-Instruct LLM diagnostic with two prompt conditions:
 
+The 72B diagnostic uses 4-bit loading and requires at least two visible 24 GB
+GPUs, or an equivalent total visible GPU memory budget. A single RTX 4090
+cannot fit this model with the current Transformers/bitsandbytes path.
+
 ```bash
 python3 scripts/run_qwen_llm_diagnostic.py \
   --config configs/llm_qwen_definitions_only.yaml \
@@ -310,11 +314,45 @@ DRY_RUN=1 bash scripts/run_uev_qwen_llm_diagnostic.sh
 sbatch scripts/run_uev_qwen_llm_diagnostic.sh
 ```
 
+On Sirius, use the launcher adapted from the previous Qwen2.5-72B run:
+
+```bash
+DRY_RUN=1 bash scripts/run_sirius_qwen_llm_diagnostic.sh
+sbatch scripts/run_sirius_qwen_llm_diagnostic.sh
+```
+
+The Sirius launcher expects the bootstrapped project venv at `.venv` and the
+`.venv/.bootstrap_complete` marker created by `scripts/bootstrap_slurm_venv.sh`.
+If an older Sirius venv fails with a missing 4-bit quantization dependency,
+update it once with:
+
+```bash
+source .venv/bin/activate
+python -m pip install -U "bitsandbytes>=0.46.1"
+```
+
 After both LLM runs finish, generate the paper table and SVG figure:
 
 ```bash
 python3 scripts/make_llm_diagnostic_assets.py
 ```
+
+Run the LLM diagnostic paired bootstrap:
+
+```bash
+python3 scripts/bootstrap_llm_diagnostic.py \
+  --bootstrap_iterations 2000 \
+  --output_dir results/analysis/llm_diagnostic_bootstrap
+
+cp results/analysis/llm_diagnostic_bootstrap/llm_diagnostic_bootstrap_summary.csv \
+  results/analysis/paper_tables/llm_diagnostic_bootstrap_summary.csv
+cp results/analysis/llm_diagnostic_bootstrap/llm_diagnostic_sample_bootstrap.csv \
+  results/analysis/paper_tables/llm_diagnostic_sample_bootstrap.csv
+```
+
+This tests Qwen continuum vs Qwen definitions, Qwen continuum vs BCE
+thresholding, Qwen continuum vs the Schwartz decoder, and appendix/sanity-check
+definitions-vs-supervised contrasts.
 
 Run the Sirius development smoke job:
 

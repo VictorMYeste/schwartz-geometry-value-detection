@@ -13,6 +13,8 @@ llm:
   device: cuda
   quantization: 4bit
   int8_fp32_cpu_offload: false
+  min_cuda_devices: 2
+  min_total_gpu_memory_gb: 44
   trust_remote_code: false
   log_prompts: true
   log_prompts_n: 1

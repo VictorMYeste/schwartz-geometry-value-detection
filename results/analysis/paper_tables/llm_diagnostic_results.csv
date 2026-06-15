@@ -1,3 +1,5 @@
 method,supervision,schwartz_theory,macro_f1,micro_f1,opposite_error_rate,decoder_geometry_cost,invalid_output_rate,repaired_output_rate,empty_prediction_rate,avg_predicted_labels,n_samples,source
-BCE thresholding,fine-tuned,no,0.2934,0.3425,0.5092,0.5634,-,-,-,-,,results/analysis/paper_tables/decoder_main_results.csv
-BCE + Schwartz decoder,fine-tuned,decoder,0.2943,0.3430,0.5072,0.5480,-,-,-,-,,results/analysis/paper_tables/decoder_main_results.csv
+Qwen definitions,none,no,0.2430,0.2730,0.5214,0.5757,0.0008,0.0008,0.2623,1.0669,14569,results/llm_diagnostic/logs/qwen_Qwen2.5-72B-Instruct_definitions_only_test_metrics.json
+Qwen continuum,none,prompt,0.2396,0.2643,0.5322,0.5633,0.0014,0.0014,0.2012,1.5004,14569,results/llm_diagnostic/logs/qwen_Qwen2.5-72B-Instruct_schwartz_continuum_test_metrics.json
+BCE thresholding,fine-tuned,no,0.2934,0.3425,0.5092,0.5634,-,-,-,-,-,results/analysis/paper_tables/decoder_main_results.csv
+BCE + Schwartz decoder,fine-tuned,decoder,0.2943,0.3430,0.5072,0.5480,-,-,-,-,-,results/analysis/paper_tables/decoder_main_results.csv
