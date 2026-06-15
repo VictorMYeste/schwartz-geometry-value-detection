@@ -115,6 +115,9 @@ def build_llm_table(*, logs_dir: Path, decoder_main_path: Path) -> pd.DataFrame:
         "avg_predicted_labels",
     ]:
         output[column] = output[column].map(lambda value: _fmt(value) if pd.notna(value) else "-")
+    output["n_samples"] = output["n_samples"].map(
+        lambda value: str(int(value)) if pd.notna(value) else "-"
+    )
     return output
 
 

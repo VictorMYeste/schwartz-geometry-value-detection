@@ -17,6 +17,8 @@ class LLMClientConfig:
     device: str | None = None
     quantization: str | None = "4bit"
     int8_fp32_cpu_offload: bool = False
+    min_cuda_devices: int = 0
+    min_total_gpu_memory_gb: float = 0.0
     max_new_tokens: int = 128
     temperature: float = 0.0
     top_p: float = 1.0
@@ -46,6 +48,7 @@ class TransformersChatClient:
 
         self.torch = torch
         self.device = self.config.device or ("cuda" if torch.cuda.is_available() else "cpu")
+        self._validate_cuda_capacity(torch)
         LOGGER.info("Loading LLM model %s", self.config.model_name)
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.config.model_name,
@@ -107,6 +110,40 @@ class TransformersChatClient:
         self.model.eval()
         if self.device != "cuda":
             self.model.to(self.device)
+
+    def _validate_cuda_capacity(self, torch: Any) -> None:
+        if self.device != "cuda":
+            return
+        if not torch.cuda.is_available():
+            raise RuntimeError("LLM config requested CUDA, but torch.cuda.is_available() is false.")
+
+        device_count = int(torch.cuda.device_count())
+        total_gb = 0.0
+        for idx in range(device_count):
+            props = torch.cuda.get_device_properties(idx)
+            total_gb += float(props.total_memory) / (1024**3)
+        LOGGER.info(
+            "Visible CUDA capacity for LLM: devices=%d total_memory=%.1f GiB",
+            device_count,
+            total_gb,
+        )
+
+        min_devices = int(self.config.min_cuda_devices or 0)
+        if min_devices > 0 and device_count < min_devices:
+            raise RuntimeError(
+                f"{self.config.model_name} requires at least {min_devices} visible CUDA "
+                f"device(s) for this config, but only {device_count} are visible. "
+                "Request more GPUs or use a smaller LLM config."
+            )
+
+        min_memory = float(self.config.min_total_gpu_memory_gb or 0.0)
+        if min_memory > 0.0 and total_gb + 0.05 < min_memory:
+            raise RuntimeError(
+                f"{self.config.model_name} requires at least {min_memory:.1f} GiB of "
+                f"visible GPU memory for this config, but only {total_gb:.1f} GiB is "
+                "visible. A single 24 GB GPU is not enough for Qwen2.5-72B in 4-bit; "
+                "request more GPUs or use a smaller LLM config."
+            )
 
     @staticmethod
     def _messages(prompt: str) -> list[dict[str, str]]:

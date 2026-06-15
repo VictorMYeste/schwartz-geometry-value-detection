@@ -84,6 +84,8 @@ def run_llm_diagnostic(
             device=llm.get("device"),
             quantization=llm.get("quantization", "4bit"),
             int8_fp32_cpu_offload=bool(llm.get("int8_fp32_cpu_offload", False)),
+            min_cuda_devices=int(llm.get("min_cuda_devices", 0) or 0),
+            min_total_gpu_memory_gb=float(llm.get("min_total_gpu_memory_gb", 0.0) or 0.0),
             max_new_tokens=int(llm.get("max_tokens", 128)),
             temperature=float(llm.get("temperature", 0.0)),
             top_p=float(llm.get("top_p", 1.0)),
@@ -201,4 +203,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

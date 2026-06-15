@@ -4,6 +4,7 @@ pyyaml
 transformers>=4.50.0
 safetensors
 accelerate
+bitsandbytes>=0.46.1
 sentencepiece
 protobuf
 # Install GPU PyTorch separately for the target cluster.
