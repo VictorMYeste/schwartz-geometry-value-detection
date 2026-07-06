@@ -131,6 +131,10 @@ schwartz-geometry-value-detection/
   paper/                # Paper assets and derived tables/figures
 ```
 
+Model predictions are released under `results/predictions/` as gzipped
+`.jsonl.gz` files; run `gunzip -k results/predictions/*.jsonl.gz` before the
+evaluation and decoding scripts, which read the raw `.jsonl`.
+
 ## Installation
 
 ```bash
