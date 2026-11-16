@@ -1,7 +1,8 @@
 """Schwartz-continuum label geometry.
 
-The canonical order below follows the project's theory-facing 19-value
-Schwartz continuum. Model outputs may use a different column order; helper
+The order below is the 19-value circular continuum of Schwartz (2012),
+"Toward refining the theory of basic human values", Fig. 1
+(doi:10.1007/978-3-531-18898-0_6). Model outputs may use a different column order; helper
 functions in this module reorder the geometry to match any provided label list.
 """
 

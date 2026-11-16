@@ -219,7 +219,8 @@ splits.
 
 ## Schwartz Value Geometry
 
-The 19 refined values are placed in canonical order on the unit circle, value
+The 19 refined values are placed on the unit circle in the order of Schwartz
+(2012, "Toward refining the theory of basic human values", Fig. 1), value
 `v_k` at angle `θ_k = 2π·k/19`. The normalized circular distance between two
 values is the shorter arc between their positions:
 
