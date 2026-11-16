@@ -1,6 +1,6 @@
 """Sample the human-evaluation items and write one annotation workbook per annotator.
 
-Blind pairwise preference study (TACL revision, WP2). Read-only on saved predictions.
+Blind pairwise preference study (revision). Read-only on saved predictions.
 
 Items, all from the test split, drawn with a fixed seed:
 - 150 sentences the Schwartz decoder edits on seed 42 (frozen schwartz / full /

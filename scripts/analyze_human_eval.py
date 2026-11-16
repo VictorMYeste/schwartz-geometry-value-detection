@@ -1,4 +1,4 @@
-"""Analyse the blind pairwise human evaluation (TACL revision, WP2).
+"""Analyse the blind pairwise human evaluation (revision).
 
 Written on 2026-11-16, before any answer was returned; the analysis below is fixed in
 advance (see ``HUMAN_EVAL_PROTOCOL.md``). Inputs are the returned annotation workbooks
