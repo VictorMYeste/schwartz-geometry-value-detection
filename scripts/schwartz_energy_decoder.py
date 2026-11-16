@@ -157,20 +157,42 @@ def _neighbor_similarity_from_distances(
     return neighbor
 
 
-def schwartz_geometry_matrices(
-    label_names: list[str],
+def _neighbor_similarity_from_steps(
+    step_distances: np.ndarray,
     *,
     neighbor_steps: int,
-) -> GeometryMatrices:
-    """Build geometry matrices from the canonical Schwartz circle."""
-    step_distances = circular_step_distance_matrix(label_names)
-    distances = circular_distance_matrix(label_names)
-    neighbor = np.zeros_like(distances, dtype=float)
+) -> np.ndarray:
+    """Neighbour weights on a circle: (k + 1 - s) / k for 0 < s <= k steps apart."""
+    step_distances = np.asarray(step_distances)
+    neighbor = np.zeros(step_distances.shape, dtype=float)
     if neighbor_steps > 0:
         neighbor_mask = (step_distances > 0) & (step_distances <= neighbor_steps)
         neighbor[neighbor_mask] = (
             (neighbor_steps + 1 - step_distances[neighbor_mask]) / neighbor_steps
         )
+    np.fill_diagonal(neighbor, 0.0)
+    return neighbor
+
+
+def _circular_step_distances_for_order(
+    label_names: list[str], circular_order: tuple[str, ...] | list[str]
+) -> np.ndarray:
+    """Integer circular step distances between labels for a given circular order."""
+    index = {label: i for i, label in enumerate(circular_order)}
+    positions = np.asarray([index[label] for label in label_names], dtype=int)
+    diff = np.abs(positions[:, None] - positions[None, :])
+    return np.minimum(diff, len(circular_order) - diff)
+
+
+def schwartz_geometry_matrices(
+    label_names: list[str],
+    *,
+    neighbor_steps: int,
+) -> GeometryMatrices:
+    """Build geometry matrices from the Schwartz circle (order in ``geometry.py``)."""
+    step_distances = circular_step_distance_matrix(label_names)
+    distances = circular_distance_matrix(label_names)
+    neighbor = _neighbor_similarity_from_steps(step_distances, neighbor_steps=neighbor_steps)
     opposite = (distances > OPPOSITE_DISTANCE_THRESHOLD).astype(float)
     np.fill_diagonal(neighbor, 0.0)
     np.fill_diagonal(opposite, 0.0)
@@ -188,13 +210,18 @@ def random_geometry_matrices(
     neighbor_steps: int,
     random_seed: int,
 ) -> GeometryMatrices:
-    """Build a fixed random circular geometry negative-control matrix."""
+    """Build a fixed random circular geometry negative-control matrix.
+
+    Built exactly like the Schwartz geometry, only on a random circular order: the
+    same step-based neighbour weights and the same opposite rule. (Until the
+    revision, the neighbour term came from ``_neighbor_similarity_from_distances``,
+    which gives weights 0.5 / ~0 at one / two steps instead of 1 / 0.5, so the
+    random control received half the neighbour reward of the Schwartz decoder.)
+    """
     order = random_circular_order(label_names, seed=random_seed)
     distances = distance_matrix_for_order(label_names, order)
-    neighbor = _neighbor_similarity_from_distances(
-        distances,
-        neighbor_steps=neighbor_steps,
-    )
+    step_distances = _circular_step_distances_for_order(label_names, order)
+    neighbor = _neighbor_similarity_from_steps(step_distances, neighbor_steps=neighbor_steps)
     opposite = (distances > OPPOSITE_DISTANCE_THRESHOLD).astype(float)
     np.fill_diagonal(opposite, 0.0)
     return GeometryMatrices(
@@ -847,6 +874,11 @@ def _load_prediction_metadata(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
+# The ValueEval'24 licence forbids redistributing the sentences, so error examples carry
+# this placeholder unless --include_example_text is given (local inspection only).
+REMOVED_TEXT = "[removed: dataset licence]"
+
+
 def _load_text_lookup() -> dict[tuple[str, str], str]:
     try:
         test_df = load_split("test")
@@ -909,7 +941,7 @@ def error_example_rows(
                 **base_row,
                 "text_id": text_id,
                 "sent_id": sent_id,
-                "text": text_lookup.get((text_id, sent_id), ""),
+                "text": text_lookup.get((text_id, sent_id), "") if text_lookup else REMOVED_TEXT,
                 "gold_labels": " | ".join(_labels_from_row(gold, label_names)),
                 "standard_labels": " | ".join(_labels_from_row(standard, label_names)),
                 "decoded_labels": " | ".join(_labels_from_row(decoded, label_names)),
@@ -986,6 +1018,7 @@ def run_decoder(
     example_geometries: set[str] | None,
     example_families: set[str] | None,
     example_objectives: set[str] | None,
+    include_example_text: bool = False,
 ) -> dict[str, Path]:
     runs = discover_runs(
         predictions_dir=predictions_dir,
@@ -1019,7 +1052,7 @@ def run_decoder(
     selected_rows: list[dict[str, Any]] = []
     bootstrap_rows: list[dict[str, Any]] = []
     example_rows: list[dict[str, Any]] = []
-    text_lookup = _load_text_lookup() if max_error_examples > 0 else {}
+    text_lookup = _load_text_lookup() if max_error_examples > 0 and include_example_text else {}
 
     for run in runs:
         LOGGER.info("Decoding method=%s seed=%s", run.method, run.seed)
@@ -1299,6 +1332,12 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--max_error_examples", type=int, default=25)
     parser.add_argument(
+        "--include_example_text",
+        action="store_true",
+        help="Write the sentence text into the error examples. For local inspection only: "
+        "the dataset licence forbids redistributing it, so never commit such files.",
+    )
+    parser.add_argument(
         "--example_geometries",
         nargs="*",
         default=["schwartz"],
@@ -1353,6 +1392,7 @@ def main() -> None:
         example_geometries=set(args.example_geometries) if args.example_geometries else None,
         example_families=set(args.example_families) if args.example_families else None,
         example_objectives=set(args.example_objectives) if args.example_objectives else None,
+        include_example_text=bool(args.include_example_text),
     )
     for name, path in paths.items():
         LOGGER.info("Wrote %s to %s", name, path)

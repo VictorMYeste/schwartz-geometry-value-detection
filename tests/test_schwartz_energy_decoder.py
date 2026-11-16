@@ -193,3 +193,27 @@ def test_run_decoder_writes_selected_results(tmp_path):
     assert selected["test_macro_f1"].notna().all()
     bootstrap = pd.read_csv(paths["sample_bootstrap"])
     assert set(bootstrap["metric"]) == {"macro_f1", "decoder_geometry_cost"}
+
+
+def test_random_control_is_built_like_the_schwartz_geometry():
+    module = _load_decoder_module()
+    from schwartz_value_geometry.geometry import circular_step_distance_matrix, random_circular_order
+
+    names = list(SCHWARTZ_VALUE_ORDER)
+    # the order-generic step distances reproduce the Schwartz ones on the Schwartz order
+    assert np.array_equal(
+        module._circular_step_distances_for_order(names, SCHWARTZ_VALUE_ORDER),
+        circular_step_distance_matrix(names),
+    )
+    schwartz = module.schwartz_geometry_matrices(names, neighbor_steps=2)
+    random = module.random_geometry_matrices(names, neighbor_steps=2, random_seed=42)
+    # same weights as the Schwartz decoder: two neighbours at 1.0 and two at 0.5 per label
+    for geometry in (schwartz, random):
+        rows = [sorted(r[r > 0].tolist()) for r in geometry.neighbor_similarity]
+        assert all(r == [0.5, 0.5, 1.0, 1.0] for r in rows)
+        assert geometry.opposite_mask.sum() == schwartz.opposite_mask.sum()
+    # and the random neighbours are the random order's neighbours
+    order = random_circular_order(names, seed=42)
+    i, j = names.index(order[0]), names.index(order[1])
+    assert random.neighbor_similarity[i, j] == 1.0
+    assert not np.array_equal(random.neighbor_similarity, schwartz.neighbor_similarity)
