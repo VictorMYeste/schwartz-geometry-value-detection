@@ -92,6 +92,8 @@ def evaluate_predictions(pred_path: Path) -> dict[str, Any]:
                 "model_name": rows[0].get("model_name") if rows else None,
                 "model_slug": rows[0].get("model_slug") if rows else None,
                 "prompt_type": rows[0].get("prompt_type") if rows else None,
+                "prompt_variant": (rows[0].get("prompt_variant") or "original") if rows else None,
+                "model_family": rows[0].get("model_family") if rows else None,
                 "split": rows[0].get("split") if rows else None,
             },
         }

@@ -225,7 +225,8 @@ class TransformersChatClient:
         if self.tokenizer.eos_token_id is not None:
             eos_ids.append(int(self.tokenizer.eos_token_id))
         vocab = self.tokenizer.get_vocab() if hasattr(self.tokenizer, "get_vocab") else {}
-        for token in ("<|im_end|>", "<end_of_turn>"):
+        # End-of-turn markers: Qwen (<|im_end|>), Gemma (<end_of_turn>), Llama 3 (<|eot_id|>).
+        for token in ("<|im_end|>", "<end_of_turn>", "<|eot_id|>"):
             if token in vocab and int(vocab[token]) not in eos_ids:
                 eos_ids.append(int(vocab[token]))
 

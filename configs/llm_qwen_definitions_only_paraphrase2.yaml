@@ -1,0 +1,22 @@
+results_dir: results/llm_diagnostic
+
+model:
+  family: qwen
+  name: Qwen/Qwen2.5-72B-Instruct
+
+llm:
+  prompt_type: definitions_only
+  prompt_variant: paraphrase2
+  temperature: 0.0
+  top_p: 1.0
+  max_tokens: 128
+  max_prompt_tokens: 4096
+  device: cuda
+  quantization: 4bit
+  int8_fp32_cpu_offload: false
+  min_cuda_devices: 2
+  min_total_gpu_memory_gb: 44
+  trust_remote_code: false
+  log_prompts: true
+  log_prompts_n: 1
+  log_prompt_max_chars: 12000

@@ -26,6 +26,75 @@ def test_prompt_templates_use_strict_json_and_continuum():
     assert "Universalism: tolerance" in prompt
 
 
+# SHA-256 of the prompts used in the submitted paper, for text="Example sentence.".
+SUBMITTED_PROMPT_SHA256 = {
+    "definitions_only": "b08ae4e2292b4b15851c963c975833a272d85aed7bac1d2752e4f5a5b0bca1fb",
+    "schwartz_continuum": "62091b3d3bc08c3324227c87a0daabf2be69b74794369024c2b279998b533d32",
+}
+
+
+def test_original_wording_reproduces_submitted_prompts():
+    import hashlib
+
+    for prompt_type, digest in SUBMITTED_PROMPT_SHA256.items():
+        for variant in (None, "original"):
+            prompt = build_prompt(
+                text="Example sentence.", prompt_type=prompt_type, prompt_variant=variant
+            )
+            assert hashlib.sha256(prompt.encode("utf-8")).hexdigest() == digest
+
+
+def test_paraphrases_keep_labels_order_schema_and_structure():
+    from schwartz_value_geometry.llm.prompts import PROMPT_VARIANTS
+
+    order = " -> ".join(SCHWARTZ_VALUE_ORDER)
+    for variant, wording in PROMPT_VARIANTS.items():
+        assert set(wording.definitions) == set(SCHWARTZ_VALUE_ORDER), variant
+        assert len(wording.continuum_lines) == 5 and len(wording.output_rules) == 4
+        defs_only = build_prompt(text="X.", prompt_type="definitions_only", prompt_variant=variant)
+        continuum = build_prompt(text="X.", prompt_type="schwartz_continuum", prompt_variant=variant)
+        for prompt in (defs_only, continuum):
+            assert '{"labels": ["Label name", "..."]}' in prompt
+            assert '{"labels": []}' in prompt
+            assert prompt.endswith("\n\nX.")
+            for label in SCHWARTZ_VALUE_ORDER:
+                assert f"- {label}: " in prompt
+        assert order not in defs_only and order in continuum
+        if variant != "original":
+            # every sentence is reworded, none copied from the original
+            original = PROMPT_VARIANTS["original"]
+            assert wording.role != original.role and wording.task != original.task
+            assert all(
+                wording.definitions[k] != original.definitions[k] for k in SCHWARTZ_VALUE_ORDER
+            )
+            assert not set(wording.continuum_lines) & set(original.continuum_lines)
+            assert not set(wording.output_rules) & set(original.output_rules)
+
+
+def test_output_path_keeps_original_names_and_tags_variants():
+    path = Path(__file__).resolve().parents[1] / "scripts" / "run_qwen_llm_diagnostic.py"
+    spec = importlib.util.spec_from_file_location("run_qwen_llm_diagnostic", path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    base = {"model": {"family": "qwen", "name": "Qwen/Qwen2.5-72B-Instruct"}}
+    cfg = {**base, "llm": {"prompt_type": "schwartz_continuum"}}
+    assert module.output_path_for(cfg, split="test", output_dir=Path("r")).name == (
+        "qwen_Qwen2.5-72B-Instruct_schwartz_continuum_test.jsonl"
+    )
+    cfg = {**base, "llm": {"prompt_type": "definitions_only", "prompt_variant": "paraphrase2"}}
+    assert module.output_path_for(cfg, split="test", output_dir=Path("r")).name == (
+        "qwen_Qwen2.5-72B-Instruct_definitions_only_paraphrase2_test.jsonl"
+    )
+    llama = {
+        "model": {"family": "llama", "name": "meta-llama/Llama-3.3-70B-Instruct"},
+        "llm": {"prompt_type": "definitions_only", "prompt_variant": "original"},
+    }
+    assert module.output_path_for(llama, split="test", output_dir=Path("r")).name == (
+        "llama_Llama-3.3-70B-Instruct_definitions_only_test.jsonl"
+    )
+
+
 def test_parse_labels_valid_json():
     parsed = parse_labels(
         '{"labels": ["Achievement", "Power: resources"]}',

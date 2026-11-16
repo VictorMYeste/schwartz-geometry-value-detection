@@ -1,4 +1,4 @@
-"""Run Qwen2.5-72B-Instruct for the LLM diagnostic."""
+"""Run an instruction-tuned LLM (Qwen2.5-72B-Instruct, Llama-3.3-70B-Instruct, ...) for the LLM diagnostic."""
 
 from __future__ import annotations
 
@@ -16,7 +16,11 @@ if str(SRC) not in sys.path:
 from schwartz_value_geometry.data.dataset import load_split, get_label_names  # noqa: E402
 from schwartz_value_geometry.llm.client import LLMClientConfig, TransformersChatClient  # noqa: E402
 from schwartz_value_geometry.llm.parsing import parse_labels  # noqa: E402
-from schwartz_value_geometry.llm.prompts import build_prompt  # noqa: E402
+from schwartz_value_geometry.llm.prompts import (  # noqa: E402
+    DEFAULT_PROMPT_VARIANT,
+    build_prompt,
+    normalize_prompt_variant,
+)
 from schwartz_value_geometry.utils.config import load_config  # noqa: E402
 from schwartz_value_geometry.utils.logging import (  # noqa: E402
     get_logger,
@@ -33,6 +37,10 @@ def _model_slug(model_name: str) -> str:
     return slug or "model"
 
 
+def prompt_variant_for(config: dict) -> str:
+    return normalize_prompt_variant(config.get("llm", {}).get("prompt_variant"))
+
+
 def output_path_for(config: dict, *, split: str, output_dir: Path | None = None) -> Path:
     model = config.get("model", {})
     llm = config.get("llm", {})
@@ -40,11 +48,14 @@ def output_path_for(config: dict, *, split: str, output_dir: Path | None = None)
     model_name = str(model.get("name", "Qwen/Qwen2.5-72B-Instruct"))
     model_slug = _model_slug(model_name)
     prompt_type = str(llm.get("prompt_type", "definitions_only")).strip().lower()
+    prompt_variant = prompt_variant_for(config)
+    # The original wording keeps the submitted file names; paraphrases add the variant.
+    variant_tag = "" if prompt_variant == DEFAULT_PROMPT_VARIANT else f"_{prompt_variant}"
     results_dir = output_dir or Path(config.get("results_dir", "results/llm_diagnostic"))
     return (
         results_dir
         / "predictions"
-        / f"{model_family}_{model_slug}_{prompt_type}_{split}.jsonl"
+        / f"{model_family}_{model_slug}_{prompt_type}{variant_tag}_{split}.jsonl"
     )
 
 
@@ -64,6 +75,7 @@ def run_llm_diagnostic(
     llm = config.get("llm", {})
     model = config.get("model", {})
     prompt_type = str(llm.get("prompt_type", "definitions_only")).strip().lower()
+    prompt_variant = prompt_variant_for(config)
     model_name = str(model.get("name", "Qwen/Qwen2.5-72B-Instruct"))
     output_path = output_path_for(config, split=split, output_dir=output_dir)
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -100,10 +112,12 @@ def run_llm_diagnostic(
         if (str(row["text_id"]), str(row["sent_id"])) not in existing
     )
     LOGGER.info(
-        "LLM diagnostic queue: total=%d pending=%d prompt=%s",
+        "LLM diagnostic queue: total=%d pending=%d prompt=%s variant=%s model=%s",
         len(records),
         pending_total,
         prompt_type,
+        prompt_variant,
+        model_name,
     )
     log_prompts = bool(llm.get("log_prompts", False))
     log_prompts_n = int(llm.get("log_prompts_n", 1))
@@ -123,7 +137,9 @@ def run_llm_diagnostic(
             sys.stderr.write("\r" + progress)
             sys.stderr.flush()
 
-            prompt = build_prompt(text=target_text, prompt_type=prompt_type)
+            prompt = build_prompt(
+                text=target_text, prompt_type=prompt_type, prompt_variant=prompt_variant
+            )
             if log_prompts and processed <= log_prompts_n:
                 rendered = client.preview_model_prompt(prompt)
                 if len(rendered) > log_prompt_max_chars:
@@ -143,10 +159,11 @@ def run_llm_diagnostic(
                 "model_family": str(model.get("family", "qwen")).strip().lower(),
                 "model_slug": _model_slug(model_name),
                 "prompt_type": prompt_type,
+                "prompt_variant": prompt_variant,
                 "split": split,
                 "text_id": text_id,
                 "sent_id": sent_id,
-                "text": target_text,
+                # no "text": the dataset licence forbids redistributing the sentences
                 "gold_labels": gold_labels,
                 "pred_labels": parsed.labels,
                 "raw_output": raw,
@@ -169,9 +186,14 @@ def run_llm_diagnostic(
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run Qwen LLM diagnostic.")
+    parser = argparse.ArgumentParser(description="Run the LLM diagnostic.")
     parser.add_argument("--config", required=True)
     parser.add_argument("--split", default="test")
+    parser.add_argument(
+        "--prompt_variant",
+        default=None,
+        help="Override llm.prompt_variant (original, paraphrase1, paraphrase2).",
+    )
     parser.add_argument("--max_samples", type=int, default=None)
     parser.add_argument("--output_dir", default=None)
     parser.add_argument("--eval", action="store_true")
@@ -185,6 +207,8 @@ def main() -> None:
         LOGGER.setLevel("DEBUG")
     silence_transformers_logging()
     config = load_config(args.config)
+    if args.prompt_variant is not None:
+        config.setdefault("llm", {})["prompt_variant"] = normalize_prompt_variant(args.prompt_variant)
     output_dir = Path(args.output_dir) if args.output_dir else None
     pred_path = run_llm_diagnostic(
         config,

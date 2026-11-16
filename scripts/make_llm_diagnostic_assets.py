@@ -31,10 +31,15 @@ def _load_llm_metrics(logs_dir: Path) -> list[dict[str, Any]]:
         if not meta.get("prompt_type"):
             continue
         prompt_type = str(meta.get("prompt_type"))
-        prompt_label = {
-            "definitions_only": "Qwen definitions",
-            "schwartz_continuum": "Qwen continuum",
+        family = str(meta.get("model_family") or "qwen").strip().lower()
+        family_label = {"qwen": "Qwen", "llama": "Llama"}.get(family, family.capitalize())
+        prompt_label = f"{family_label} " + {
+            "definitions_only": "definitions",
+            "schwartz_continuum": "continuum",
         }.get(prompt_type, prompt_type)
+        variant = str(meta.get("prompt_variant") or "original")
+        if variant != "original":
+            prompt_label += f" ({variant})"
         rows.append(
             {
                 "method": prompt_label,
