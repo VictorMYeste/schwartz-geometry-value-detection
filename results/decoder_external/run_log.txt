@@ -1,0 +1,123 @@
+observed decodes done in 8.2s
+     system  n_edited  n_improved  n_worsened  n_unchanged  n_added  share_added_in_gold  n_removed  share_removed_not_in_gold  delta_macro_f1  delta_micro_f1  delta_geometry_cost  delta_geometry_cost_value_positive
+     seed42  346.0000     93.0000     82.0000     171.0000 200.0000               0.1300   172.0000                     0.9186          0.0012          0.0007              -0.0154                             -0.0157
+      seed7  313.0000     78.0000     66.0000     169.0000 154.0000               0.1558   173.0000                     0.8786          0.0007          0.0006              -0.0141                             -0.0156
+   seed1701  333.0000    107.0000     74.0000     152.0000 153.0000               0.1830   210.0000                     0.8714          0.0008          0.0011              -0.0153                             -0.0169
+     seed11  370.0000    106.0000     84.0000     180.0000 169.0000               0.1361   226.0000                     0.8850          0.0006          0.0007              -0.0192                             -0.0205
+   seed1984  425.0000    105.0000     85.0000     235.0000 250.0000               0.1200   239.0000                     0.8661          0.0016         -0.0004              -0.0129                             -0.0132
+  ensemble5  329.0000    100.0000     65.0000     164.0000 183.0000               0.1913   163.0000                     0.9018          0.0024          0.0016              -0.0182                             -0.0178
+  seed_mean  357.4000     97.8000     78.2000     181.4000 185.2000               0.1450   204.0000                     0.8839          0.0010          0.0006              -0.0154                             -0.0164
+seed_pooled 1787.0000    489.0000    391.0000     907.0000 926.0000               0.1415  1020.0000                     0.8824             NaN             NaN                  NaN                                 NaN
+                              metric  delta_decoded_minus_standard  delta_ci_low  delta_ci_high  p_value_two_sided
+                            macro_f1                        0.0024        0.0004         0.0043             0.0160
+                            micro_f1                        0.0016        0.0003         0.0029             0.0160
+               decoder_geometry_cost                       -0.0182       -0.0232        -0.0129             0.0000
+                 opposite_error_rate                       -0.0032       -0.0054        -0.0010             0.0060
+decoder_geometry_cost_value_positive                       -0.0178       -0.0235        -0.0117             0.0000
+  opposite_error_rate_value_positive                       -0.0080       -0.0110        -0.0053             0.0000
+  null 100/2000 orders (1.42s/order, ~44.9 min left)
+  null 200/2000 orders (1.29s/order, ~38.7 min left)
+  null 300/2000 orders (1.24s/order, ~35.0 min left)
+  null 400/2000 orders (1.19s/order, ~31.7 min left)
+  null 500/2000 orders (1.16s/order, ~29.1 min left)
+  null 600/2000 orders (1.15s/order, ~26.8 min left)
+  null 700/2000 orders (1.22s/order, ~26.5 min left)
+  null 800/2000 orders (1.20s/order, ~24.1 min left)
+  null 900/2000 orders (1.18s/order, ~21.7 min left)
+  null 1000/2000 orders (1.17s/order, ~19.5 min left)
+  null 1100/2000 orders (1.16s/order, ~17.4 min left)
+  null 1200/2000 orders (1.15s/order, ~15.3 min left)
+  null 1300/2000 orders (1.17s/order, ~13.6 min left)
+  null 1400/2000 orders (1.18s/order, ~11.8 min left)
+  null 1500/2000 orders (1.18s/order, ~9.9 min left)
+  null 1600/2000 orders (1.77s/order, ~11.8 min left)
+  null 1700/2000 orders (1.74s/order, ~8.7 min left)
+  null 1800/2000 orders (1.75s/order, ~5.8 min left)
+  null 1900/2000 orders (1.77s/order, ~2.9 min left)
+  null 2000/2000 orders (1.77s/order, ~0.0 min left)
+construction    system                          statistic  observed  null_mean  null_q975  n_as_extreme  p_one_sided
+     matched ensemble5                     delta_macro_f1    0.0024     0.0005     0.0021       10.0000       0.0110
+     matched ensemble5                     delta_micro_f1    0.0016     0.0007     0.0023      130.0000       0.1309
+     matched ensemble5                delta_geometry_cost   -0.0182     0.0021     0.0081        0.0000       0.0010
+     matched ensemble5 delta_geometry_cost_value_positive   -0.0178     0.0008     0.0070        0.0000       0.0010
+     matched ensemble5                           win_rate    0.6061     0.5726     0.6627      254.0000       0.2547
+     matched ensemble5                share_added_in_gold    0.1913     0.1783     0.2477      327.0000       0.3277
+     matched    seed11                     delta_macro_f1    0.0006     0.0000     0.0018      211.0000       0.2118
+     matched    seed11                     delta_micro_f1    0.0007     0.0008     0.0024      550.0000       0.5504
+     matched    seed11                delta_geometry_cost   -0.0192     0.0010     0.0075        0.0000       0.0010
+     matched    seed11 delta_geometry_cost_value_positive   -0.0205    -0.0004     0.0063        0.0000       0.0010
+     matched    seed11                           win_rate    0.5579     0.6019     0.6845      848.0000       0.8482
+     matched    seed11                share_added_in_gold    0.1361     0.1567     0.2268      710.0000       0.7103
+     matched  seed1701                     delta_macro_f1    0.0008    -0.0008     0.0008       35.0000       0.0360
+     matched  seed1701                     delta_micro_f1    0.0011     0.0001     0.0015       70.0000       0.0709
+     matched  seed1701                delta_geometry_cost   -0.0153     0.0012     0.0070        0.0000       0.0010
+     matched  seed1701 delta_geometry_cost_value_positive   -0.0169    -0.0009     0.0052        0.0000       0.0010
+     matched  seed1701                           win_rate    0.5912     0.5717     0.6540      351.0000       0.3516
+     matched  seed1701                share_added_in_gold    0.1830     0.1429     0.2152      124.0000       0.1249
+     matched  seed1984                     delta_macro_f1    0.0016    -0.0017     0.0009        5.0000       0.0060
+     matched  seed1984                     delta_micro_f1   -0.0004     0.0000     0.0017      677.0000       0.6773
+     matched  seed1984                delta_geometry_cost   -0.0129     0.0017     0.0081        0.0000       0.0010
+     matched  seed1984 delta_geometry_cost_value_positive   -0.0132     0.0001     0.0065        0.0000       0.0010
+     matched  seed1984                           win_rate    0.5526     0.5894     0.6618      815.0000       0.8152
+     matched  seed1984                share_added_in_gold    0.1200     0.1128     0.1579      356.0000       0.3566
+     matched    seed42                     delta_macro_f1    0.0012     0.0004     0.0016      108.0000       0.1089
+     matched    seed42                     delta_micro_f1    0.0007     0.0007     0.0020      480.0000       0.4805
+     matched    seed42                delta_geometry_cost   -0.0154     0.0034     0.0090        0.0000       0.0010
+     matched    seed42 delta_geometry_cost_value_positive   -0.0157     0.0020     0.0079        0.0000       0.0010
+     matched    seed42                           win_rate    0.5314     0.5984     0.6878      915.0000       0.9151
+     matched    seed42                share_added_in_gold    0.1300     0.1375     0.1918      606.0000       0.6064
+     matched     seed7                     delta_macro_f1    0.0007    -0.0001     0.0016      193.0000       0.1938
+     matched     seed7                     delta_micro_f1    0.0006     0.0004     0.0016      350.0000       0.3506
+     matched     seed7                delta_geometry_cost   -0.0141     0.0000     0.0051        0.0000       0.0010
+     matched     seed7 delta_geometry_cost_value_positive   -0.0156    -0.0013     0.0037        0.0000       0.0010
+     matched     seed7                           win_rate    0.5417     0.5720     0.6650      727.0000       0.7273
+     matched     seed7                share_added_in_gold    0.1558     0.1460     0.2059      360.0000       0.3606
+        repo ensemble5                     delta_macro_f1    0.0024     0.0000     0.0014        1.0000       0.0020
+        repo ensemble5                     delta_micro_f1    0.0016     0.0008     0.0023      137.0000       0.1379
+        repo ensemble5                delta_geometry_cost   -0.0182     0.0023     0.0074        0.0000       0.0010
+        repo ensemble5 delta_geometry_cost_value_positive   -0.0178     0.0001     0.0052        0.0000       0.0010
+        repo ensemble5                           win_rate    0.6061     0.6439     0.7256      807.0000       0.8072
+        repo ensemble5                share_added_in_gold    0.1913     0.1993     0.3529      516.0000       0.5165
+        repo    seed11                     delta_macro_f1    0.0006    -0.0001     0.0011      134.0000       0.1349
+        repo    seed11                     delta_micro_f1    0.0007     0.0010     0.0024      638.0000       0.6384
+        repo    seed11                delta_geometry_cost   -0.0192     0.0010     0.0069        0.0000       0.0010
+        repo    seed11 delta_geometry_cost_value_positive   -0.0205    -0.0010     0.0052        0.0000       0.0010
+        repo    seed11                           win_rate    0.5579     0.6704     0.7414      999.0000       0.9990
+        repo    seed11                share_added_in_gold    0.1361     0.1563     0.2857      594.0000       0.5944
+        repo  seed1701                     delta_macro_f1    0.0008    -0.0008     0.0007       19.0000       0.0200
+        repo  seed1701                     delta_micro_f1    0.0011     0.0003     0.0015      109.0000       0.1099
+        repo  seed1701                delta_geometry_cost   -0.0153     0.0014     0.0063        0.0000       0.0010
+        repo  seed1701 delta_geometry_cost_value_positive   -0.0169    -0.0015     0.0044        0.0000       0.0010
+        repo  seed1701                           win_rate    0.5912     0.6463     0.7205      910.0000       0.9101
+        repo  seed1701                share_added_in_gold    0.1830     0.1421     0.2963      250.0000       0.2507
+        repo  seed1984                     delta_macro_f1    0.0016    -0.0019     0.0004        0.0000       0.0010
+        repo  seed1984                     delta_micro_f1   -0.0004     0.0005     0.0020      894.0000       0.8941
+        repo  seed1984                delta_geometry_cost   -0.0129     0.0019     0.0079        0.0000       0.0010
+        repo  seed1984 delta_geometry_cost_value_positive   -0.0132    -0.0004     0.0052        0.0000       0.0010
+        repo  seed1984                           win_rate    0.5526     0.6529     0.7191      993.0000       0.9930
+        repo  seed1984                share_added_in_gold    0.1200     0.1030     0.1786      323.0000       0.3237
+        repo    seed42                     delta_macro_f1    0.0012     0.0004     0.0015       80.0000       0.0809
+        repo    seed42                     delta_micro_f1    0.0007     0.0010     0.0022      662.0000       0.6623
+        repo    seed42                delta_geometry_cost   -0.0154     0.0034     0.0082        0.0000       0.0010
+        repo    seed42 delta_geometry_cost_value_positive   -0.0157     0.0013     0.0063        0.0000       0.0010
+        repo    seed42                           win_rate    0.5314     0.6773     0.7581     1000.0000       1.0000
+        repo    seed42                share_added_in_gold    0.1300     0.1478     0.2594      607.0000       0.6074
+        repo     seed7                     delta_macro_f1    0.0007    -0.0003     0.0011      111.0000       0.1119
+        repo     seed7                     delta_micro_f1    0.0006     0.0005     0.0017      446.0000       0.4466
+        repo     seed7                delta_geometry_cost   -0.0141     0.0010     0.0053        0.0000       0.0010
+        repo     seed7 delta_geometry_cost_value_positive   -0.0156    -0.0008     0.0036        0.0000       0.0010
+        repo     seed7                           win_rate    0.5417     0.6426     0.7313      983.0000       0.9830
+        repo     seed7                share_added_in_gold    0.1558     0.1393     0.2778      336.0000       0.3367
+     matched seed_mean                     delta_macro_f1    0.0010    -0.0004     0.0005        1.0000       0.0020
+     matched seed_mean                     delta_micro_f1    0.0006     0.0004     0.0014      354.0000       0.3546
+     matched seed_mean                delta_geometry_cost   -0.0154     0.0015     0.0059        0.0000       0.0010
+     matched seed_mean delta_geometry_cost_value_positive   -0.0164    -0.0001     0.0046        0.0000       0.0010
+     matched seed_mean                           win_rate    0.5550     0.5867     0.6427      839.0000       0.8392
+     matched seed_mean                share_added_in_gold    0.1450     0.1392     0.1677      335.0000       0.3357
+        repo seed_mean                     delta_macro_f1    0.0010    -0.0005     0.0004        0.0000       0.0010
+        repo seed_mean                     delta_micro_f1    0.0006     0.0007     0.0015      577.0000       0.5774
+        repo seed_mean                delta_geometry_cost   -0.0154     0.0018     0.0057        0.0000       0.0010
+        repo seed_mean delta_geometry_cost_value_positive   -0.0164    -0.0005     0.0036        0.0000       0.0010
+        repo seed_mean                           win_rate    0.5550     0.6579     0.7040     1000.0000       1.0000
+        repo seed_mean                share_added_in_gold    0.1450     0.1377     0.1928      381.0000       0.3816
+done in 61.5 min; outputs in results/decoder_external/
