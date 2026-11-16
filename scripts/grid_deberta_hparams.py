@@ -20,7 +20,7 @@ from schwartz_value_geometry.utils.logging import (  # noqa: E402
     get_logger,
     silence_transformers_logging,
 )
-from schwartz_value_geometry.utils.naming import loss_slug  # noqa: E402
+from schwartz_value_geometry.utils.naming import loss_slug, model_slug  # noqa: E402
 
 LOGGER = get_logger(__name__)
 CSV_FIELDS = [
@@ -92,6 +92,11 @@ def _parse_args() -> argparse.Namespace:
         action="store_true",
         help="Enable debug logging.",
     )
+    # Optional overrides of the grid (defaults reproduce the original DeBERTa grid).
+    parser.add_argument("--learning_rates", type=float, nargs="+", default=None)
+    parser.add_argument("--weight_decays", type=float, nargs="+", default=None)
+    parser.add_argument("--batch_sizes", type=int, nargs="+", default=None)
+    parser.add_argument("--max_lengths", type=int, nargs="+", default=None)
     return parser.parse_args()
 
 
@@ -104,11 +109,11 @@ def main() -> None:
 
     base_config = load_config(args.config)
 
-    weight_decays = [0.1, 0.12, 0.15, 0.18, 0.2]
-    batch_sizes = [16]
+    weight_decays = args.weight_decays or [0.1, 0.12, 0.15, 0.18, 0.2]
+    batch_sizes = args.batch_sizes or [16]
     # max_lengths = [512, 1024]
-    max_lengths = [1024]
-    learning_rates = [6e-6, 7e-6, 8e-6, 9e-6, 1e-5]
+    max_lengths = args.max_lengths or [1024]
+    learning_rates = args.learning_rates or [6e-6, 7e-6, 8e-6, 9e-6, 1e-5]
     base_grad_accum_steps = int(
         base_config.get("training", {}).get("grad_accum_steps", 2)
     )
@@ -167,8 +172,11 @@ def main() -> None:
             if args.max_samples is not None:
                 config["max_samples"] = args.max_samples
 
+            model_tag = model_slug(str(config.get("model", {}).get("name", "")))
             run_name = (
                 f"grid_deberta_{loss_slug(config)}_lr{lr}_wd{wd}_b{batch}_ml{max_len}"
+                if model_tag == "deberta-v3-base"
+                else f"grid_{model_tag}_{loss_slug(config)}_lr{lr}_wd{wd}_b{batch}_ml{max_len}"
             )
             LOGGER.info(
                 "[%d/%d] lr=%.1e wd=%.2f batch=%d max_len=%d",

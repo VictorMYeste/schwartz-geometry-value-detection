@@ -1,0 +1,11 @@
+# Second backbone (revision): RoBERTa-large with the Schwartz GeoLoss.
+# lambda_geo as selected for DeBERTa (not retuned); learning_rate as in roberta_large_bce.yaml.
+model:
+  family: roberta
+  name: FacebookAI/roberta-large
+training:
+  max_length: 512
+  learning_rate: 1.0e-5
+loss:
+  name: schwartz_geoloss
+  lambda_geo: 0.01

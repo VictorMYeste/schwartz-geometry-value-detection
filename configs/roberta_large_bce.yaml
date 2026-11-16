@@ -1,0 +1,9 @@
+# Second backbone (revision): RoBERTa-large with the BCE loss.
+# Same training setup as DeBERTa-v3-base except max_length (RoBERTa has 512 positions).
+# learning_rate is set from the short validation check (scripts/run_sirius_roberta_lr_check.sh).
+model:
+  family: roberta
+  name: FacebookAI/roberta-large
+training:
+  max_length: 512
+  learning_rate: 1.0e-5
