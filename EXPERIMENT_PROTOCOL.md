@@ -922,3 +922,92 @@ QLoRA is intentionally out of scope for the main diagnostic. It would turn the
 LLM section into another supervised training method, making the paper less
 clean. If added later, treat it as appendix-only future work or a separate
 experiment, not as part of the main prompt-vs-decoder diagnostic.
+
+## Additional Analyses
+
+These analyses extend the main study. All of them run on saved predictions or on
+the gold labels unless marked GPU; none writes sentence text to its outputs.
+
+### Matched random-geometry decoder control
+
+`random_geometry_matrices` builds the random control exactly like the Schwartz
+geometry, only on a seeded random circular order: neighbour weight 1 at one step and
+0.5 at two steps, the same opposite rule. Earlier versions derived the neighbour term
+from normalized distances, which gave the random control half the neighbour reward
+(0.5 / ~0). The random-control rows were regenerated with the matched construction
+(same frozen settings as step 9) and merged into
+`results/analysis/schwartz_energy_decoder_bootstrap_examples_full/`; the Schwartz and
+empirical rows are byte-identical to the original run. The control bootstrap was then
+rerun (its empirical rows reproduce the original run) and the paper assets rebuilt:
+
+```bash
+python3 scripts/schwartz_energy_decoder.py --geometries random --families full \
+  --objectives standard pareto_99 --bootstrap_iterations 2000 \
+  --bootstrap_metrics macro_f1 micro_f1 decoder_geometry_cost \
+  --bootstrap_geometries random --max_error_examples 0 \
+  --output_dir results/analysis/schwartz_energy_decoder_random_matched
+# replace the geometry == "random" rows of the five tables in
+# schwartz_energy_decoder_bootstrap_examples_full/ with the rows written above
+python3 scripts/bootstrap_energy_decoder_controls.py
+python3 scripts/make_decoder_paper_assets.py
+```
+
+On the five seeds, validation selection picks the same settings as before; only seed
+42 uses the neighbour term, so the random row moves little (geometry cost 0.5625 ->
+0.5623). The stronger test of the ordering is the 1,000-order null at fixed weights
+in `scripts/eval_decoder_edits_external.py` (below).
+
+Error-example tables carry the placeholder "[removed: dataset licence]" instead of
+the sentence; `--include_example_text` writes the text for local inspection only and
+such files must not be committed.
+
+### Gold-label geometry: value presence vs value stance
+
+```bash
+python3 scripts/analyze_gold_geometry.py   # 10,000 random circular orders; results/gold_geometry/
+```
+
+Presence: co-occurrence of gold labels against circular distance. Stance: same- vs
+opposite-stance co-occurrence (attained / constrained) against distance.
+
+### BCE ensemble and gold-based decoder edits
+
+```bash
+python3 scripts/build_bce_ensemble.py             # results/ensemble/
+python3 scripts/eval_decoder_edits_external.py    # results/decoder_external/
+```
+
+The second script reports, per seed and for the ensemble, how the frozen decoder's
+edits compare with the gold labels, and tests the decoder against 1,000 random
+circular orders at the same weights (`matched` construction primary; `repo` is the
+pre-fix construction of the random control, kept for comparison).
+
+### Prompt brittleness and a second LLM (GPU)
+
+Prompt wordings live in `src/schwartz_value_geometry/llm/prompts.py`: `original`
+(the prompts of the main study, byte for byte) and two meaning-preserving
+paraphrases. Configs: `configs/llm_qwen_*_paraphrase{1,2}.yaml` and
+`configs/llm_llama_*.yaml` (Llama-3.3-70B-Instruct, 4-bit). On Sirius the `gpu`
+partition allows at most 3 days, so pass `--time`:
+
+```bash
+LLM_CONFIGS="configs/llm_qwen_definitions_only_paraphrase1.yaml configs/llm_qwen_schwartz_continuum_paraphrase1.yaml" \
+  sbatch --job-name=sgvd-qwen-p1 --time=36:00:00 scripts/run_sirius_qwen_llm_diagnostic.sh
+LLM_CONFIGS="configs/llm_llama_definitions_only.yaml configs/llm_llama_schwartz_continuum.yaml" \
+  sbatch --job-name=sgvd-llama33 --time=36:00:00 scripts/run_sirius_qwen_llm_diagnostic.sh
+```
+
+### Second encoder: RoBERTa-large (GPU)
+
+```bash
+sbatch scripts/run_sirius_roberta_lr_check.sh     # BCE, seed 42, validation only; one LR per task
+# set the chosen learning_rate in configs/roberta_large_{bce,schwartz_geoloss}.yaml, then:
+FINAL_CONFIGS="configs/roberta_large_bce.yaml configs/roberta_large_schwartz_geoloss.yaml" \
+  sbatch --array=0-9%4 scripts/run_sirius_final_supervised.sh
+```
+
+### Human evaluation
+
+See `HUMAN_EVAL_PROTOCOL.md` (fixed before any annotation was returned),
+`scripts/sample_human_eval_items.py` and `scripts/analyze_human_eval.py`. The
+annotation workbooks contain dataset text and are kept outside the repository.

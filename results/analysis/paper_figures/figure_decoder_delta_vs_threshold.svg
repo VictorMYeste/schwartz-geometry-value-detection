@@ -9,9 +9,9 @@
 <rect x="86.0" y="245.1" width="104.3" height="22.7" fill="#7a7f87"/>
 <text class="small" x="138.2" y="318" text-anchor="middle" transform="rotate(-20 138.2 318)">Empirical</text>
 <text class="small" x="138.2" y="239.1" text-anchor="middle">+0.000</text>
-<rect x="206.3" y="237.6" width="104.3" height="30.3" fill="#b07d2f"/>
+<rect x="206.3" y="252.5" width="104.3" height="15.3" fill="#b07d2f"/>
 <text class="small" x="258.5" y="318" text-anchor="middle" transform="rotate(-20 258.5 318)">Random</text>
-<text class="small" x="258.5" y="231.6" text-anchor="middle">+0.000</text>
+<text class="small" x="258.5" y="246.5" text-anchor="middle">+0.000</text>
 <rect x="326.7" y="66.2" width="104.3" height="201.6" fill="#1f77b4"/>
 <text class="small" x="378.8" y="318" text-anchor="middle" transform="rotate(-20 378.8 318)">Schwartz</text>
 <text class="small" x="378.8" y="60.2" text-anchor="middle">+0.001</text>
@@ -24,9 +24,9 @@
 <rect x="509.0" y="260.8" width="104.3" height="7.0" fill="#7a7f87"/>
 <text class="small" x="561.2" y="318" text-anchor="middle" transform="rotate(-20 561.2 318)">Empirical</text>
 <text class="small" x="561.2" y="254.8" text-anchor="middle">+0.001</text>
-<rect x="629.3" y="256.3" width="104.3" height="11.5" fill="#b07d2f"/>
+<rect x="629.3" y="254.0" width="104.3" height="13.8" fill="#b07d2f"/>
 <text class="small" x="681.5" y="318" text-anchor="middle" transform="rotate(-20 681.5 318)">Random</text>
-<text class="small" x="681.5" y="250.3" text-anchor="middle">+0.001</text>
+<text class="small" x="681.5" y="248.0" text-anchor="middle">+0.001</text>
 <rect x="749.7" y="66.2" width="104.3" height="201.6" fill="#1f77b4"/>
 <text class="small" x="801.8" y="318" text-anchor="middle" transform="rotate(-20 801.8 318)">Schwartz</text>
 <text class="small" x="801.8" y="60.2" text-anchor="middle">+0.015</text>
