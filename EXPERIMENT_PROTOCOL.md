@@ -982,6 +982,20 @@ edits compare with the gold labels, and tests the decoder against 1,000 random
 circular orders at the same weights (`matched` construction primary; `repo` is the
 pre-fix construction of the random control, kept for comparison).
 
+### Decoder-edit examples for the paper
+
+```bash
+python3 scripts/sample_paper_examples.py --text-out ../paper-examples/originals.csv
+```
+
+Seed 42, frozen decoder (same setting as the human evaluation). Each edited test sentence
+falls in one cell of edit type (addition only / removal only / mixed) x change in
+sentence-level F1 against gold (better / worse / same). The script writes the cell counts
+and draws one sentence per addition and removal cell (`EXAMPLE_SEED = 2026`), excluding the
+sentences used in the human evaluation (read from its key file, IDs only). It writes
+`results/paper_examples/` with IDs and labels only. The original sentences go to the
+`--text-out` file, outside the repository, for paraphrasing; the paper shows paraphrases only.
+
 ### Prompt brittleness and a second LLM (GPU)
 
 Prompt wordings live in `src/schwartz_value_geometry/llm/prompts.py`: `original`

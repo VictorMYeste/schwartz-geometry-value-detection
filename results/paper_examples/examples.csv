@@ -1,0 +1,7 @@
+edit_type,outcome,cell_count,eligible_in_cell,text_id,sent_id,gold,thresholded,decoded,added,removed,f1_thresholded,f1_decoded
+addition,better,24,14,TR_039,12,Security: societal,,Security: personal; Security: societal,Security: personal; Security: societal,,0.0,0.6667
+addition,worse,68,37,BG_217,15,Universalism: concern,Conformity: rules; Universalism: concern,Security: societal; Conformity: rules; Universalism: concern,Security: societal,,0.6667,0.5
+addition,same,94,50,EN_098,24,,Self-direction: action; Stimulation,Self-direction: thought; Self-direction: action; Stimulation,Self-direction: thought,,0.0,0.0
+removal,better,67,38,HE_217,10,Tradition,Power: dominance; Tradition; Humility,Power: dominance; Tradition,,Humility,0.5,0.6667
+removal,worse,14,5,EL_126,28,Power: resources,Power: resources; Benevolence: caring,Benevolence: caring,,Power: resources,0.6667,0.0
+removal,same,71,38,EL_274,14,Benevolence: dependability,Achievement; Humility,Achievement,,Humility,0.0,0.0
