@@ -10,7 +10,6 @@
 #SBATCH --error=/lustre/scratch/%u/schwartz-geometry-value-detection/logs/%x-%A_%a.err
 #SBATCH --hint=nomultithread
 #SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=vicyesmo@upv.es
 
 set -euo pipefail
 

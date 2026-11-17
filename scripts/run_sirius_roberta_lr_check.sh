@@ -10,7 +10,6 @@
 #SBATCH --error=/lustre/scratch/%u/schwartz-geometry-value-detection/logs/%x-%A_%a.err
 #SBATCH --hint=nomultithread
 #SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=vicyesmo@upv.es
 
 # Short learning-rate check for the second backbone (revision).
 # One array task per learning rate: BCE loss, seed 42, validation Macro-F1 only (no test).
