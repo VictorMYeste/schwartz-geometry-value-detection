@@ -74,7 +74,7 @@ recent Transformers versions block `torch.load` on older PyTorch versions when a
 model falls back to `pytorch_model.bin`:
 
 ```bash
-cd /home/hpc/34045staff/schwartz-geometry-value-detection
+cd "$HOME/schwartz-geometry-value-detection"
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 python -m pip install --upgrade --force-reinstall torch==2.6.0 --index-url https://download.pytorch.org/whl/cu124
@@ -326,7 +326,7 @@ sbatch scripts/run_sirius_final_supervised.sh
 On UEV, submit:
 
 ```bash
-mkdir -p /home/hpc/34045staff/output/schwartz-geometry-value-detection
+mkdir -p "$HOME/output/schwartz-geometry-value-detection"   # must match the launcher's #SBATCH --output
 sbatch scripts/run_uev_final_supervised.sh
 ```
 
