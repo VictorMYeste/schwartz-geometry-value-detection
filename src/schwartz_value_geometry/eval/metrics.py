@@ -357,6 +357,36 @@ def compute_opposite_error_rate(
     return float(opposite_false_positive_total / false_positive_total)
 
 
+def compute_opposite_error_rate_value_positive(
+    y_true: np.ndarray,
+    y_pred: np.ndarray,
+    *,
+    label_names: list[str],
+    distance_matrix: np.ndarray | None = None,
+    threshold: float = OPPOSITE_DISTANCE_THRESHOLD,
+) -> float:
+    """Opposite-error rate on value-positive samples only (samples with at least one gold value).
+
+    ``compute_opposite_error_rate`` counts every false positive on a sample without gold values
+    as opposite, because it is (vacuously) far from all of them. On Touche24-ValueEval such
+    samples hold 41-44% of all false positives, so they dominate that rate. This variant drops
+    them and measures only how far wrong labels fall from the values a sample does express.
+    ``compute_opposite_error_rate`` is left unchanged, so earlier results stay reproducible.
+    """
+    y_true = _as_2d(np.asarray(y_true)).astype(int)
+    y_pred = _as_2d(np.asarray(y_pred)).astype(int)
+    if y_true.shape != y_pred.shape:
+        raise ValueError("y_true and y_pred must have identical shapes")
+    keep = y_true.sum(axis=1) > 0
+    return compute_opposite_error_rate(
+        y_true[keep],
+        y_pred[keep],
+        label_names=label_names,
+        distance_matrix=distance_matrix,
+        threshold=threshold,
+    )
+
+
 def compute_confusion_distance_correlation(
     y_true: np.ndarray,
     y_pred: np.ndarray,
