@@ -9,7 +9,6 @@
 #SBATCH --error=/home/hpc/34045staff/output/schwartz-geometry-value-detection/%x-%j.err
 #SBATCH --hint=nomultithread
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=victor.yeste@universidadeuropea.es
 
 set -euo pipefail
 

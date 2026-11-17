@@ -39,8 +39,9 @@ cd "$HOME/schwartz-geometry-value-detection"
 git pull
 ```
 
-The Sirius launchers set `--mail-type` but no address. To get job e-mails, pass
-yours when submitting, e.g. `sbatch --mail-user=you@example.org scripts/run_sirius_smoke.sh`.
+The Slurm launchers (Sirius and UEV) set `--mail-type` but no address. To get job
+e-mails, pass yours when submitting, e.g.
+`sbatch --mail-user=you@example.org scripts/run_sirius_smoke.sh`.
 
 Use a project-local virtual environment:
 
