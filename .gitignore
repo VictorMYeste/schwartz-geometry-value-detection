@@ -18,6 +18,7 @@ results/logs/
 # raw predictions are kept locally; the gzipped copies are committed for release
 results/predictions/*.jsonl
 results/ensemble/predictions/*.jsonl
+results/external/predictions/*.jsonl
 results/analysis/final/qual_examples_*.jsonl
 results/test_metrics_summary.csv
 notebooks/colab_launcher_custom.ipynb

@@ -3,7 +3,9 @@
 Read-only on saved predictions; no weights are re-selected.
 
 Systems: the five final BCE seeds and the 5-seed BCE ensemble (``build_bce_ensemble.py``),
-each with its validation-frozen per-label thresholds. Decoder: the frozen setting of the
+each with its validation-frozen per-label thresholds, and optionally (``--systems external``) an
+external near-state-of-the-art ensemble imported with ``import_external_ensemble.py``, with its
+own validation-tuned global threshold. Decoder: the frozen setting of the
 paper (``SETTING``, ``DECODE_KW`` in ``compute_decoder_edit_rate.py``: alpha = 0.1,
 beta = 0.2, gamma = 0, neighbor_steps = 2) on the circular order of ``geometry.py``.
 
@@ -32,12 +34,13 @@ Null geometry construction (``--constructions``):
   ``_neighbor_similarity_from_distances`` and is weaker (0.5 at one step, ~0 at two steps).
   Rebuilt here explicitly so it stays reproducible. Reported for comparison only.
 
-Plus a sample-level paired bootstrap (decoded - thresholded) for the ensemble, with the
-repository's ``paired_bootstrap_delta``.
+Plus a sample-level paired bootstrap (decoded - thresholded) for the ensemble and the external
+system, with the repository's ``paired_bootstrap_delta``.
 
 Outputs (``--out-dir``, default results/decoder_external/): observed_by_system.csv,
 null_by_order.csv (every order x system, so p-values can be recomputed), null_orders.csv,
-null_summary.csv, ensemble_bootstrap.csv, run_info.json. IDs and counts only; no sentence text.
+null_summary.csv, ensemble_bootstrap.csv / external_bootstrap.csv, run_info.json. Run the external
+system with its own ``--out-dir`` so the main results are not overwritten. IDs and counts only; no sentence text.
 """
 
 from __future__ import annotations
@@ -86,6 +89,7 @@ from schwartz_value_geometry.eval.metrics import (  # noqa: E402
     compute_global_metrics,
     compute_neighbor_error_rate,
     compute_opposite_error_rate,
+    compute_opposite_error_rate_value_positive,
 )
 from schwartz_value_geometry.eval.stats import paired_bootstrap_delta  # noqa: E402
 from schwartz_value_geometry.geometry import (  # noqa: E402
@@ -104,6 +108,10 @@ LOGS_DIR = ROOT / "results" / "logs"
 ENSEMBLE_PREFIX = f"deberta_bce_ensemble5_seed0_{MODEL_SLUG}"
 ENSEMBLE_PRED = ROOT / "results" / "ensemble" / "predictions" / f"{ENSEMBLE_PREFIX}_test.jsonl"
 ENSEMBLE_THR = ROOT / "results" / "ensemble" / "logs" / f"{ENSEMBLE_PREFIX}_validation_thresholds.json"
+EXTERNAL_PREFIX = "yeste2026sentence_softvote_seed0_external"
+EXTERNAL_PRED = ROOT / "results" / "external" / "predictions" / f"{EXTERNAL_PREFIX}_test.jsonl"
+EXTERNAL_THR = ROOT / "results" / "external" / "logs" / f"{EXTERNAL_PREFIX}_validation_thresholds.json"
+BOOTSTRAP_SYSTEMS = {"ensemble5": "ensemble_bootstrap.csv", "external": "external_bootstrap.csv"}
 SEED_SYSTEMS = [f"seed{seed}" for seed in SEEDS]
 ORDER_SEED_BASE = 20261116
 TIE = 1e-12
@@ -232,6 +240,11 @@ class SchwartzMetrics:
             "confusion_distance_correlation": compute_confusion_distance_correlation(
                 gold, pred, label_names=self.label_names),
         }
+        positive = gold.sum(axis=1) > 0
+        mine["opposite_error_rate_value_positive"] = self.terms(gold[positive], pred[positive])[
+            "opposite_error_rate"]
+        ref["opposite_error_rate_value_positive"] = compute_opposite_error_rate_value_positive(
+            gold, pred, label_names=self.label_names)
         for key, value in ref.items():
             if abs(mine[key] - value) > 1e-12:
                 raise AssertionError(f"vectorized {key} differs: {mine[key]} vs {value}")
@@ -269,7 +282,8 @@ def null_geometry(construction: str, label_names: list[str], order_seed: int) ->
 
 
 # ------------------------------------------------------------------------- systems
-def system_files(include_seeds: bool, include_ensemble: bool) -> dict[str, tuple[Path, Path]]:
+def system_files(include_seeds: bool, include_ensemble: bool,
+                 include_external: bool = False) -> dict[str, tuple[Path, Path]]:
     files: dict[str, tuple[Path, Path]] = {}
     if include_seeds:
         for seed in SEEDS:
@@ -281,6 +295,10 @@ def system_files(include_seeds: bool, include_ensemble: bool) -> dict[str, tuple
         if not ENSEMBLE_PRED.exists():
             raise FileNotFoundError(f"{ENSEMBLE_PRED} missing: run scripts/build_bce_ensemble.py first")
         files["ensemble5"] = (ENSEMBLE_PRED, ENSEMBLE_THR)
+    if include_external:
+        if not EXTERNAL_PRED.exists():
+            raise FileNotFoundError(f"{EXTERNAL_PRED} missing: run scripts/import_external_ensemble.py first")
+        files["external"] = (EXTERNAL_PRED, EXTERNAL_THR)
     return files
 
 
@@ -393,7 +411,7 @@ def summarize_null(observed: pd.DataFrame, null: pd.DataFrame) -> pd.DataFrame:
 
 
 def ensemble_bootstrap(system: dict, y_dec: np.ndarray, metrics: SchwartzMetrics,
-                       n_iterations: int, seed: int) -> pd.DataFrame:
+                       n_iterations: int, seed: int, name: str = "ensemble5") -> pd.DataFrame:
     gold, y_thr = system["gold"], system["y_thr"]
     fns = {
         "macro_f1": lambda t, p: float(compute_global_metrics(t, p)["macro_f1"]),
@@ -411,7 +429,7 @@ def ensemble_bootstrap(system: dict, y_dec: np.ndarray, metrics: SchwartzMetrics
         res = paired_bootstrap_delta(gold, y_dec, y_thr, metric_fn=fn, n_iterations=n_iterations, seed=seed)
         low = metric in lower
         rows.append({
-            "system": "ensemble5", "metric": metric, "higher_is_better": not low,
+            "system": name, "metric": metric, "higher_is_better": not low,
             "delta_decoded_minus_standard": res.delta, "delta_ci_low": res.ci_low, "delta_ci_high": res.ci_high,
             "improvement_over_standard": -res.delta if low else res.delta,
             "p_value_two_sided": res.p_value, "n_samples": res.n_samples, "n_iterations": res.n_iterations,
@@ -427,7 +445,8 @@ def main() -> None:
     parser.add_argument("--order-seed-base", type=int, default=ORDER_SEED_BASE)
     parser.add_argument("--constructions", default="matched,repo",
                         help="comma-separated subset of {matched, repo}; 'matched' is the primary null")
-    parser.add_argument("--systems", default="seeds,ensemble", help="comma-separated subset of {seeds, ensemble}")
+    parser.add_argument("--systems", default="seeds,ensemble",
+                        help="comma-separated subset of {seeds, ensemble, external}")
     parser.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 2))
     parser.add_argument("--bootstrap-iterations", type=int, default=2000)
     parser.add_argument("--bootstrap-seed", type=int, default=42)
@@ -437,7 +456,7 @@ def main() -> None:
     t0 = time.time()
 
     systems_arg = {s.strip() for s in args.systems.split(",") if s.strip()}
-    files = system_files("seeds" in systems_arg, "ensemble" in systems_arg)
+    files = system_files("seeds" in systems_arg, "ensemble" in systems_arg, "external" in systems_arg)
     constructions = [c.strip() for c in args.constructions.split(",") if c.strip()]
     out_dir: Path = args.out_dir
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -471,11 +490,13 @@ def main() -> None:
                     "delta_micro_f1", "delta_geometry_cost", "delta_geometry_cost_value_positive"]]
           .to_string(index=False, float_format=lambda v: f"{v:.4f}"))
 
-    # Ensemble bootstrap.
-    if "ensemble5" in systems:
-        boot = ensemble_bootstrap(systems["ensemble5"], decoded["ensemble5"], metrics,
-                                  args.bootstrap_iterations, args.bootstrap_seed)
-        boot.to_csv(out_dir / "ensemble_bootstrap.csv", index=False)
+    # Bootstrap for the single-run systems (ensemble, external).
+    for name, out_name in BOOTSTRAP_SYSTEMS.items():
+        if name not in systems:
+            continue
+        boot = ensemble_bootstrap(systems[name], decoded[name], metrics,
+                                  args.bootstrap_iterations, args.bootstrap_seed, name=name)
+        boot.to_csv(out_dir / out_name, index=False)
         print(boot[["metric", "delta_decoded_minus_standard", "delta_ci_low", "delta_ci_high",
                     "p_value_two_sided"]].to_string(index=False, float_format=lambda v: f"{v:.4f}"))
 

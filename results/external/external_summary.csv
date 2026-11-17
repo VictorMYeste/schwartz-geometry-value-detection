@@ -1,0 +1,2 @@
+system,threshold_global,validation_macro_f1,macro_f1,micro_f1,opposite_error_rate,neighbor_error_rate,confusion_distance_correlation,macro_auprc,micro_auprc,decoder_geometry_cost,labels_per_sentence
+yeste2026sentence_softvote,0.29,0.3263571141376682,0.3318677266352745,0.3841510262320272,0.5161547031672767,0.1930606398217412,-0.160046096009609,0.2915819492155605,0.3390005932059857,0.5491692469794089,0.6714942686526185

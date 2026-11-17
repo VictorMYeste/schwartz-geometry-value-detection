@@ -982,6 +982,28 @@ edits compare with the gold labels, and tests the decoder against 1,000 random
 circular orders at the same weights (`matched` construction primary; `repo` is the
 pre-fix construction of the random control, kept for comparison).
 
+### Decoder on a near-state-of-the-art system
+
+The frozen decoder is also run on the soft-voting DeBERTa ensemble of Yeste & Rosso
+(2026, arXiv 2601.14172), which scores Macro-F1 0.332 on the same test split.
+- **Inputs:** its validation and test probabilities, TSVs with IDs and 19 probability
+  columns and no text, released in that paper's public repository
+  (https://github.com/VictorMYeste/human-value-detection, `approaches/moral-values/output/`).
+  The commands below assume a clone of it next to this repository.
+- **Thresholding baseline:** the system's own rule, one global threshold tuned on validation
+  (0.29). The import script checks that this reproduces the published test score.
+- **Decoder:** same frozen weights as everywhere else; nothing is re-selected.
+
+```bash
+E=../../Paper-1/human-value-detection/approaches/moral-values/output
+python3 scripts/import_external_ensemble.py \
+  --val-tsv  "$E/direct_champion-tuned-soft-champion-val.tsv" \
+  --test-tsv "$E/direct_champion-tuned-soft-champion-test.tsv" \
+  --expect-test-macro-f1 0.33187                         # results/external/
+python3 scripts/eval_decoder_edits_external.py --systems external \
+  --constructions matched --out-dir results/decoder_external_sota
+```
+
 ### Decoder-edit examples for the paper
 
 ```bash

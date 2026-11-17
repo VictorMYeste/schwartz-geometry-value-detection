@@ -1,0 +1,41 @@
+{
+  "script": "scripts/eval_decoder_edits_external.py",
+  "date": "2026-11-17 13:37",
+  "systems": {
+    "external": [
+      "results/external/predictions/yeste2026sentence_softvote_seed0_external_test.jsonl",
+      "results/external/logs/yeste2026sentence_softvote_seed0_external_validation_thresholds.json"
+    ]
+  },
+  "setting": {
+    "alpha_neighbor": 0.1,
+    "beta_opposite": 0.2,
+    "gamma_cardinality": 0.0
+  },
+  "decode_kw": {
+    "top_k": 8,
+    "max_candidates": 8,
+    "max_labels": 5,
+    "threshold_factor": 0.5,
+    "min_prob": 0.01,
+    "marginal_temperature": 1.0,
+    "neighbor_steps": 2
+  },
+  "n_orders": 1000,
+  "order_seed_base": 20261116,
+  "constructions": [
+    "matched"
+  ],
+  "p_value": "(1 + #{null as or more extreme}) / (1 + N), one-sided; seed_mean = per-order mean over the five seeds",
+  "bootstrap": {
+    "iterations": 2000,
+    "seed": 42
+  },
+  "workers": 6,
+  "seconds_observed": 1.6,
+  "seconds_null": 192.1,
+  "seconds_total": 335.0,
+  "python": "3.11.8",
+  "numpy": "1.26.4",
+  "pandas": "2.1.4"
+}
