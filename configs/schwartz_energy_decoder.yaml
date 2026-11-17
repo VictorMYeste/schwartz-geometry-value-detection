@@ -23,7 +23,7 @@ objectives:
 selection:
   objective: pareto_99
   selected_on: validation
-  primary_constraint: keep validation macro-F1 within 99% of standard thresholding
+  primary_constraint: keep settings whose validation macro-F1 is at least 99% of the best setting's (any setting, not only standard thresholding; select_setting in scripts/schwartz_energy_decoder.py)
   secondary_objective: minimize decoder_geometry_cost
 
 decoder:
