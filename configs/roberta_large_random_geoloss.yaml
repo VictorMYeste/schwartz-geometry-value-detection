@@ -1,0 +1,14 @@
+# Second backbone (revision): RoBERTa-large with the random-order GeoLoss control.
+# Identical to roberta_large_schwartz_geoloss.yaml except the loss: the same GeoLoss over a fixed
+# random circular order (random_seed 42, as in deberta_random_geoloss.yaml), independent of the
+# training seed. Run because Schwartz GeoLoss raised AUPRC over BCE on RoBERTa in all five seeds.
+model:
+  family: roberta
+  name: FacebookAI/roberta-large
+training:
+  max_length: 512
+  learning_rate: 1.0e-5
+loss:
+  name: random_geoloss
+  lambda_geo: 0.01
+  random_seed: 42

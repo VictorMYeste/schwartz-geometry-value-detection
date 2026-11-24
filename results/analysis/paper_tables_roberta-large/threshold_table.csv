@@ -1,0 +1,286 @@
+method,model_name,split,seed,threshold_source,threshold_mode,source_file,label,threshold
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Self-direction: thought,0.19
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Self-direction: action,0.46
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Stimulation,0.08
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Hedonism,0.36
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Achievement,0.21
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Power: dominance,0.18
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Power: resources,0.08
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Face,0.09
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Security: personal,0.11
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Security: societal,0.19
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Tradition,0.24
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Conformity: rules,0.13
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Conformity: interpersonal,0.14
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Humility,0.09
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Benevolence: caring,0.1
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Benevolence: dependability,0.36
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Universalism: concern,0.2
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Universalism: nature,0.22
+bce,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_bce_seed11_roberta-large_test_metrics.json,Universalism: tolerance,0.14
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Self-direction: thought,0.19
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Self-direction: action,0.12
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Stimulation,0.26
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Hedonism,0.15
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Achievement,0.21
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Power: dominance,0.12
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Power: resources,0.15
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Face,0.1
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Security: personal,0.19
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Security: societal,0.17
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Tradition,0.19
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Conformity: rules,0.14
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Conformity: interpersonal,0.17
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Humility,0.09
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Benevolence: caring,0.19
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Benevolence: dependability,0.24
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Universalism: concern,0.38
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Universalism: nature,0.23
+bce,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_bce_seed1701_roberta-large_test_metrics.json,Universalism: tolerance,0.34
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Self-direction: thought,0.04
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Self-direction: action,0.19
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Stimulation,0.11
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Hedonism,0.13
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Achievement,0.15
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Power: dominance,0.28
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Power: resources,0.26
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Face,0.17
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Security: personal,0.09
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Security: societal,0.16
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Tradition,0.22
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Conformity: rules,0.18
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Conformity: interpersonal,0.12
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Humility,0.03
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Benevolence: caring,0.16
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Benevolence: dependability,0.12
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Universalism: concern,0.22
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Universalism: nature,0.55
+bce,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_bce_seed1984_roberta-large_test_metrics.json,Universalism: tolerance,0.19
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Self-direction: thought,0.17
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Self-direction: action,0.2
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Stimulation,0.21
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Hedonism,0.1
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Achievement,0.22
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Power: dominance,0.15
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Power: resources,0.06
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Face,0.18
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Security: personal,0.16
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Security: societal,0.22
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Tradition,0.13
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Conformity: rules,0.25
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Conformity: interpersonal,0.14
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Humility,0.08
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Benevolence: caring,0.23
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Benevolence: dependability,0.34
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Universalism: concern,0.33
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Universalism: nature,0.08
+bce,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_bce_seed42_roberta-large_test_metrics.json,Universalism: tolerance,0.31
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Self-direction: thought,0.03
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Self-direction: action,0.12
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Stimulation,0.16
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Hedonism,0.24
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Achievement,0.15
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Power: dominance,0.15
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Power: resources,0.06
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Face,0.17
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Security: personal,0.21
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Security: societal,0.29
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Tradition,0.27
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Conformity: rules,0.22
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Conformity: interpersonal,0.23
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Humility,0.03
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Benevolence: caring,0.26
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Benevolence: dependability,0.15
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Universalism: concern,0.33
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Universalism: nature,0.12
+bce,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_bce_seed7_roberta-large_test_metrics.json,Universalism: tolerance,0.09
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Self-direction: thought,0.06
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Self-direction: action,0.17
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Stimulation,0.22
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Hedonism,0.14
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Achievement,0.13
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Power: dominance,0.11
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Power: resources,0.15
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Face,0.18
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Security: personal,0.25
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Security: societal,0.38
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Tradition,0.24
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Conformity: rules,0.25
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Conformity: interpersonal,0.09
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Humility,0.04
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Benevolence: caring,0.21
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Benevolence: dependability,0.06
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Universalism: concern,0.45
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Universalism: nature,0.36
+random_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_random_geoloss_seed11_roberta-large_test_metrics.json,Universalism: tolerance,0.12
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Self-direction: thought,0.21
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Self-direction: action,0.11
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Stimulation,0.42
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Hedonism,0.2
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Achievement,0.22
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Power: dominance,0.15
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Power: resources,0.07
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Face,0.11
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Security: personal,0.37
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Security: societal,0.13
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Tradition,0.29
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Conformity: rules,0.12
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Conformity: interpersonal,0.05
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Humility,0.04
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Benevolence: caring,0.14
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Benevolence: dependability,0.18
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Universalism: concern,0.18
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Universalism: nature,0.08
+random_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_random_geoloss_seed1701_roberta-large_test_metrics.json,Universalism: tolerance,0.28
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Self-direction: thought,0.07
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Self-direction: action,0.15
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Stimulation,0.11
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Hedonism,0.16
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Achievement,0.13
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Power: dominance,0.18
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Power: resources,0.18
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Face,0.09
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Security: personal,0.07
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Security: societal,0.19
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Tradition,0.14
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Conformity: rules,0.18
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Conformity: interpersonal,0.11
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Humility,0.02
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Benevolence: caring,0.17
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Benevolence: dependability,0.14
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Universalism: concern,0.24
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Universalism: nature,0.25
+random_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_random_geoloss_seed1984_roberta-large_test_metrics.json,Universalism: tolerance,0.25
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Self-direction: thought,0.27
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Self-direction: action,0.2
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Stimulation,0.17
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Hedonism,0.11
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Achievement,0.27
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Power: dominance,0.19
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Power: resources,0.08
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Face,0.15
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Security: personal,0.1
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Security: societal,0.4
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Tradition,0.08
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Conformity: rules,0.17
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Conformity: interpersonal,0.18
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Humility,0.08
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Benevolence: caring,0.26
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Benevolence: dependability,0.26
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Universalism: concern,0.48
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Universalism: nature,0.31
+random_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_random_geoloss_seed42_roberta-large_test_metrics.json,Universalism: tolerance,0.34
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Self-direction: thought,0.05
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Self-direction: action,0.11
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Stimulation,0.13
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Hedonism,0.18
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Achievement,0.16
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Power: dominance,0.26
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Power: resources,0.19
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Face,0.08
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Security: personal,0.2
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Security: societal,0.23
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Tradition,0.23
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Conformity: rules,0.36
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Conformity: interpersonal,0.11
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Humility,0.02
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Benevolence: caring,0.2
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Benevolence: dependability,0.13
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Universalism: concern,0.17
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Universalism: nature,0.16
+random_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_random_geoloss_seed7_roberta-large_test_metrics.json,Universalism: tolerance,0.23
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Self-direction: thought,0.05
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Self-direction: action,0.25
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Stimulation,0.13
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Hedonism,0.25
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Achievement,0.14
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Power: dominance,0.21
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Power: resources,0.16
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Face,0.13
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Security: personal,0.16
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Security: societal,0.21
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Tradition,0.3
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Conformity: rules,0.19
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Conformity: interpersonal,0.16
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Humility,0.03
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Benevolence: caring,0.22
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Benevolence: dependability,0.08
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Universalism: concern,0.43
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Universalism: nature,0.21
+schwartz_geoloss,FacebookAI/roberta-large,test,11,provided,provided,results/logs/deberta_schwartz_geoloss_seed11_roberta-large_test_metrics.json,Universalism: tolerance,0.35000000000000003
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Self-direction: thought,0.15
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Self-direction: action,0.12
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Stimulation,0.18
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Hedonism,0.27
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Achievement,0.33
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Power: dominance,0.14
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Power: resources,0.05
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Face,0.35000000000000003
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Security: personal,0.22
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Security: societal,0.26
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Tradition,0.21
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Conformity: rules,0.17
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Conformity: interpersonal,0.14
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Humility,0.04
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Benevolence: caring,0.1
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Benevolence: dependability,0.09
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Universalism: concern,0.17
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Universalism: nature,0.2
+schwartz_geoloss,FacebookAI/roberta-large,test,1701,provided,provided,results/logs/deberta_schwartz_geoloss_seed1701_roberta-large_test_metrics.json,Universalism: tolerance,0.24
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Self-direction: thought,0.12
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Self-direction: action,0.13
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Stimulation,0.1
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Hedonism,0.19
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Achievement,0.19
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Power: dominance,0.21
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Power: resources,0.16
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Face,0.14
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Security: personal,0.08
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Security: societal,0.18
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Tradition,0.19
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Conformity: rules,0.2
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Conformity: interpersonal,0.1
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Humility,0.02
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Benevolence: caring,0.11
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Benevolence: dependability,0.11
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Universalism: concern,0.16
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Universalism: nature,0.49
+schwartz_geoloss,FacebookAI/roberta-large,test,1984,provided,provided,results/logs/deberta_schwartz_geoloss_seed1984_roberta-large_test_metrics.json,Universalism: tolerance,0.13
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Self-direction: thought,0.16
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Self-direction: action,0.22
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Stimulation,0.08
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Hedonism,0.11
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Achievement,0.22
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Power: dominance,0.14
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Power: resources,0.06
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Face,0.28
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Security: personal,0.17
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Security: societal,0.25
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Tradition,0.32
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Conformity: rules,0.18
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Conformity: interpersonal,0.17
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Humility,0.03
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Benevolence: caring,0.19
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Benevolence: dependability,0.37
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Universalism: concern,0.26
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Universalism: nature,0.17
+schwartz_geoloss,FacebookAI/roberta-large,test,42,provided,provided,results/logs/deberta_schwartz_geoloss_seed42_roberta-large_test_metrics.json,Universalism: tolerance,0.15
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Self-direction: thought,0.16
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Self-direction: action,0.11
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Stimulation,0.11
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Hedonism,0.28
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Achievement,0.19
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Power: dominance,0.25
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Power: resources,0.16
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Face,0.2
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Security: personal,0.15
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Security: societal,0.24
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Tradition,0.25
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Conformity: rules,0.37
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Conformity: interpersonal,0.14
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Humility,0.02
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Benevolence: caring,0.19
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Benevolence: dependability,0.08
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Universalism: concern,0.25
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Universalism: nature,0.36
+schwartz_geoloss,FacebookAI/roberta-large,test,7,provided,provided,results/logs/deberta_schwartz_geoloss_seed7_roberta-large_test_metrics.json,Universalism: tolerance,0.1

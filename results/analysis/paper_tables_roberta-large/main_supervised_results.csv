@@ -1,0 +1,4 @@
+method,model_name,split,threshold_source,macro_f1_mean_std,micro_f1_mean_std,macro_auprc_mean_std,circular_error_mean_std,opposite_value_activation_mean_std,neighbor_error_rate_mean_std,confusion_distance_correlation_mean_std,macro_f1_count,micro_f1_count,macro_auprc_count,circular_error_count,opposite_value_activation_count,neighbor_error_rate_count,confusion_distance_correlation_count
+bce,FacebookAI/roberta-large,test,provided,0.3318 ± 0.0040,0.3809 ± 0.0018,0.2841 ± 0.0061,0.1190 ± 0.0049,0.0439 ± 0.0023,0.1991 ± 0.0087,-0.1561 ± 0.0198,5,5,5,5,5,5,5
+random_geoloss,FacebookAI/roberta-large,test,provided,0.3313 ± 0.0020,0.3791 ± 0.0042,0.2857 ± 0.0074,0.1209 ± 0.0069,0.0437 ± 0.0025,0.1974 ± 0.0094,-0.1677 ± 0.0287,5,5,5,5,5,5,5
+schwartz_geoloss,FacebookAI/roberta-large,test,provided,0.3313 ± 0.0038,0.3822 ± 0.0062,0.2891 ± 0.0055,0.1192 ± 0.0069,0.0428 ± 0.0025,0.2044 ± 0.0071,-0.1716 ± 0.0216,5,5,5,5,5,5,5

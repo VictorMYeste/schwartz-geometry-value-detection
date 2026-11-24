@@ -1,0 +1,62 @@
+{
+  "script": "scripts/eval_decoder_edits_external.py",
+  "date": "2026-11-23 09:02",
+  "model_slug": "roberta-large",
+  "systems": {
+    "seed42": [
+      "results/predictions/deberta_bce_seed42_roberta-large_test.jsonl",
+      "results/logs/deberta_bce_seed42_roberta-large_validation_thresholds.json"
+    ],
+    "seed7": [
+      "results/predictions/deberta_bce_seed7_roberta-large_test.jsonl",
+      "results/logs/deberta_bce_seed7_roberta-large_validation_thresholds.json"
+    ],
+    "seed1701": [
+      "results/predictions/deberta_bce_seed1701_roberta-large_test.jsonl",
+      "results/logs/deberta_bce_seed1701_roberta-large_validation_thresholds.json"
+    ],
+    "seed11": [
+      "results/predictions/deberta_bce_seed11_roberta-large_test.jsonl",
+      "results/logs/deberta_bce_seed11_roberta-large_validation_thresholds.json"
+    ],
+    "seed1984": [
+      "results/predictions/deberta_bce_seed1984_roberta-large_test.jsonl",
+      "results/logs/deberta_bce_seed1984_roberta-large_validation_thresholds.json"
+    ],
+    "ensemble5": [
+      "results/ensemble_roberta-large/predictions/deberta_bce_ensemble5_seed0_roberta-large_test.jsonl",
+      "results/ensemble_roberta-large/logs/deberta_bce_ensemble5_seed0_roberta-large_validation_thresholds.json"
+    ]
+  },
+  "setting": {
+    "alpha_neighbor": 0.1,
+    "beta_opposite": 0.2,
+    "gamma_cardinality": 0.0
+  },
+  "decode_kw": {
+    "top_k": 8,
+    "max_candidates": 8,
+    "max_labels": 5,
+    "threshold_factor": 0.5,
+    "min_prob": 0.01,
+    "marginal_temperature": 1.0,
+    "neighbor_steps": 2
+  },
+  "n_orders": 1000,
+  "order_seed_base": 20261116,
+  "constructions": [
+    "matched"
+  ],
+  "p_value": "(1 + #{null as or more extreme}) / (1 + N), one-sided; seed_mean = per-order mean over the five seeds",
+  "bootstrap": {
+    "iterations": 2000,
+    "seed": 42
+  },
+  "workers": 6,
+  "seconds_observed": 9.3,
+  "seconds_null": 1426.1,
+  "seconds_total": 1592.0,
+  "python": "3.11.8",
+  "numpy": "1.26.4",
+  "pandas": "2.1.4"
+}

@@ -1,0 +1,2 @@
+weight_decay,batch_size,max_length,learning_rate,best_macro_f1,collapsed
+0.15,8.0,512.0,1e-05,0.3219940167701862,False
