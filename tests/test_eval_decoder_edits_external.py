@@ -75,3 +75,20 @@ def test_matched_construction_and_vectorized_metrics_match_repository():
     gold = (rng.random((300, 19)) < 0.08).astype(int)
     pred = (rng.random((300, 19)) < 0.10).astype(int)
     module.SchwartzMetrics(names).verify(gold, pred)  # raises if any term differs
+
+
+def test_system_files_follow_the_model_slug():
+    module = _load_module()
+    deberta = module.system_files(True, False)
+    roberta = module.system_files(True, False, model_slug="roberta-large")
+    assert set(deberta) == set(roberta) == {f"seed{s}" for s in module.SEEDS}
+    for name, (pred, thr) in roberta.items():
+        assert pred.name == f"deberta_bce_{name}_roberta-large_test.jsonl"
+        assert thr.name == f"deberta_bce_{name}_roberta-large_validation_thresholds.json"
+    # The default stays on the paper's main backbone.
+    assert deberta["seed42"][0].name == "deberta_bce_seed42_deberta-v3-base_test.jsonl"
+    # A second backbone's ensemble lives in its own folder, never in results/ensemble/.
+    import build_bce_ensemble
+
+    assert build_bce_ensemble.ensemble_dir("deberta-v3-base").name == "ensemble"
+    assert build_bce_ensemble.ensemble_dir("roberta-large").name == "ensemble_roberta-large"

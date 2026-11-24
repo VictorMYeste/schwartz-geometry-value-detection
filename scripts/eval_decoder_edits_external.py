@@ -3,7 +3,8 @@
 Read-only on saved predictions; no weights are re-selected.
 
 Systems: the five final BCE seeds and the 5-seed BCE ensemble (``build_bce_ensemble.py``),
-each with its validation-frozen per-label thresholds, and optionally (``--systems external``) an
+each with its validation-frozen per-label thresholds, for the backbone given by ``--model-slug``
+(default deberta-v3-base; e.g. roberta-large for the second backbone), and optionally (``--systems external``) an
 external near-state-of-the-art ensemble imported with ``import_external_ensemble.py``, with its
 own validation-tuned global threshold. Decoder: the frozen setting of the
 paper (``SETTING``, ``DECODE_KW`` in ``compute_decoder_edit_rate.py``: alpha = 0.1,
@@ -71,6 +72,7 @@ for path in (SRC, SCRIPTS):
     if str(path) not in sys.path:
         sys.path.insert(0, str(path))
 
+from build_bce_ensemble import ensemble_dir, ensemble_prefix  # noqa: E402
 from compute_decoder_edit_rate import DECODE_KW, SETTING  # noqa: E402
 from geometry_aware_calibration import (  # noqa: E402
     load_prediction_jsonl,
@@ -105,9 +107,6 @@ SEEDS = [42, 7, 1701, 11, 1984]
 MODEL_SLUG = "deberta-v3-base"
 PRED_DIR = ROOT / "results" / "predictions"
 LOGS_DIR = ROOT / "results" / "logs"
-ENSEMBLE_PREFIX = f"deberta_bce_ensemble5_seed0_{MODEL_SLUG}"
-ENSEMBLE_PRED = ROOT / "results" / "ensemble" / "predictions" / f"{ENSEMBLE_PREFIX}_test.jsonl"
-ENSEMBLE_THR = ROOT / "results" / "ensemble" / "logs" / f"{ENSEMBLE_PREFIX}_validation_thresholds.json"
 EXTERNAL_PREFIX = "yeste2026sentence_softvote_seed0_external"
 EXTERNAL_PRED = ROOT / "results" / "external" / "predictions" / f"{EXTERNAL_PREFIX}_test.jsonl"
 EXTERNAL_THR = ROOT / "results" / "external" / "logs" / f"{EXTERNAL_PREFIX}_validation_thresholds.json"
@@ -283,18 +282,21 @@ def null_geometry(construction: str, label_names: list[str], order_seed: int) ->
 
 # ------------------------------------------------------------------------- systems
 def system_files(include_seeds: bool, include_ensemble: bool,
-                 include_external: bool = False) -> dict[str, tuple[Path, Path]]:
+                 include_external: bool = False, model_slug: str = MODEL_SLUG) -> dict[str, tuple[Path, Path]]:
     files: dict[str, tuple[Path, Path]] = {}
     if include_seeds:
         for seed in SEEDS:
             files[f"seed{seed}"] = (
-                PRED_DIR / f"deberta_bce_seed{seed}_{MODEL_SLUG}_test.jsonl",
-                LOGS_DIR / f"deberta_bce_seed{seed}_{MODEL_SLUG}_validation_thresholds.json",
+                PRED_DIR / f"deberta_bce_seed{seed}_{model_slug}_test.jsonl",
+                LOGS_DIR / f"deberta_bce_seed{seed}_{model_slug}_validation_thresholds.json",
             )
     if include_ensemble:
-        if not ENSEMBLE_PRED.exists():
-            raise FileNotFoundError(f"{ENSEMBLE_PRED} missing: run scripts/build_bce_ensemble.py first")
-        files["ensemble5"] = (ENSEMBLE_PRED, ENSEMBLE_THR)
+        prefix, base = ensemble_prefix(model_slug), ensemble_dir(model_slug)
+        pred = base / "predictions" / f"{prefix}_test.jsonl"
+        if not pred.exists():
+            raise FileNotFoundError(
+                f"{pred} missing: run scripts/build_bce_ensemble.py --model-slug {model_slug} first")
+        files["ensemble5"] = (pred, base / "logs" / f"{prefix}_validation_thresholds.json")
     if include_external:
         if not EXTERNAL_PRED.exists():
             raise FileNotFoundError(f"{EXTERNAL_PRED} missing: run scripts/import_external_ensemble.py first")
@@ -447,6 +449,8 @@ def main() -> None:
                         help="comma-separated subset of {matched, repo}; 'matched' is the primary null")
     parser.add_argument("--systems", default="seeds,ensemble",
                         help="comma-separated subset of {seeds, ensemble, external}")
+    parser.add_argument("--model-slug", default=MODEL_SLUG,
+                        help="backbone of the seeds and ensemble (deberta-v3-base, roberta-large)")
     parser.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 2))
     parser.add_argument("--bootstrap-iterations", type=int, default=2000)
     parser.add_argument("--bootstrap-seed", type=int, default=42)
@@ -456,7 +460,8 @@ def main() -> None:
     t0 = time.time()
 
     systems_arg = {s.strip() for s in args.systems.split(",") if s.strip()}
-    files = system_files("seeds" in systems_arg, "ensemble" in systems_arg, "external" in systems_arg)
+    files = system_files("seeds" in systems_arg, "ensemble" in systems_arg, "external" in systems_arg,
+                         model_slug=args.model_slug)
     constructions = [c.strip() for c in args.constructions.split(",") if c.strip()]
     out_dir: Path = args.out_dir
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -527,6 +532,7 @@ def main() -> None:
     info = {
         "script": "scripts/eval_decoder_edits_external.py",
         "date": time.strftime("%Y-%m-%d %H:%M"),
+        "model_slug": args.model_slug,
         "systems": {k: [str(p.relative_to(ROOT)) for p in v] for k, v in files.items()},
         "setting": {"alpha_neighbor": SETTING.alpha_neighbor, "beta_opposite": SETTING.beta_opposite,
                     "gamma_cardinality": SETTING.gamma_cardinality},

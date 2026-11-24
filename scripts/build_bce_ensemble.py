@@ -23,6 +23,10 @@ No model is retrained or re-run. For the five final BCE seeds the script
    their mean and standard deviation, and the ensemble.
 
 The files hold IDs, gold labels and probabilities only; no sentence text.
+
+``--model-slug`` selects the backbone (default deberta-v3-base, the paper's main model). Any
+other backbone's ensemble goes to results/ensemble_<slug>/ so the DeBERTa files are untouched,
+e.g. ``python3 scripts/build_bce_ensemble.py --model-slug roberta-large``.
 """
 
 from __future__ import annotations
@@ -57,10 +61,20 @@ from schwartz_value_geometry.eval.metrics import (  # noqa: E402
 
 SEEDS = [42, 7, 1701, 11, 1984]
 MODEL_SLUG = "deberta-v3-base"
+MODEL_NAMES = {"deberta-v3-base": "microsoft/deberta-v3-base", "roberta-large": "FacebookAI/roberta-large"}
 PRED_DIR = ROOT / "results" / "predictions"
 LOGS_DIR = ROOT / "results" / "logs"
 OUT_DIR = ROOT / "results" / "ensemble"
 ENSEMBLE_PREFIX = f"deberta_bce_ensemble5_seed0_{MODEL_SLUG}"
+
+
+def ensemble_prefix(model_slug: str) -> str:
+    return f"deberta_bce_ensemble5_seed0_{model_slug}"
+
+
+def ensemble_dir(model_slug: str) -> Path:
+    """results/ensemble for the main backbone, results/ensemble_<slug> for any other."""
+    return OUT_DIR if model_slug == "deberta-v3-base" else ROOT / "results" / f"ensemble_{model_slug}"
 
 # Same sweep as eval_deberta.py defaults and the final Slurm launchers
 # (THRESHOLD_MODE=per_label, THRESHOLD_STEP=0.01).
@@ -135,12 +149,17 @@ def scalar_metrics(metrics: dict) -> dict[str, float]:
 
 
 def main() -> None:
+    global MODEL_SLUG, ENSEMBLE_PREFIX  # set from --model-slug, read by the loaders below
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    parser.add_argument("--out-dir", type=Path, default=OUT_DIR)
+    parser.add_argument("--model-slug", default=MODEL_SLUG, choices=sorted(MODEL_NAMES))
+    parser.add_argument("--out-dir", type=Path, default=None,
+                        help="default: results/ensemble (DeBERTa) or results/ensemble_<slug>")
     args = parser.parse_args()
-    out_dir: Path = args.out_dir
+    MODEL_SLUG = args.model_slug
+    ENSEMBLE_PREFIX = ensemble_prefix(MODEL_SLUG)
+    out_dir: Path = args.out_dir or ensemble_dir(MODEL_SLUG)
     meta_common = {
-        "model_name": "microsoft/deberta-v3-base",
+        "model_name": MODEL_NAMES[MODEL_SLUG],
         "loss": {"name": "bce"},
         "input": "sentence",
         "ensemble": {
