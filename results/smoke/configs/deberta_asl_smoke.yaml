@@ -4,7 +4,7 @@ loss:
   gamma_neg: 4.0
   clip: 0.05
   eps: 1.0e-08
-results_dir: /home/vicyesmo@upvnet.upv.es/schwartz-geometry-value-detection/results/smoke
+results_dir: results/smoke
 save_checkpoints: true
 training:
   num_epochs: 1

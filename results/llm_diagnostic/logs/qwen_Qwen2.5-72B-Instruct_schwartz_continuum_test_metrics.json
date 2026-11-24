@@ -156,7 +156,7 @@
   "micro_auprc": null,
   "auprc_note": "not_applicable_for_label_only_llm_outputs",
   "meta": {
-    "prediction_file": "/home/vicyesmo@upvnet.upv.es/schwartz-geometry-value-detection/results/llm_diagnostic/predictions/qwen_Qwen2.5-72B-Instruct_schwartz_continuum_test.jsonl",
+    "prediction_file": "results/llm_diagnostic/predictions/qwen_Qwen2.5-72B-Instruct_schwartz_continuum_test.jsonl",
     "model_name": "Qwen/Qwen2.5-72B-Instruct",
     "model_slug": "Qwen2.5-72B-Instruct",
     "prompt_type": "schwartz_continuum",

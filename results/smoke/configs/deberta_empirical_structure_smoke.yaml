@@ -3,7 +3,7 @@ loss:
   base: asl
   lambda_geo: 0.05
   empirical_metric: jaccard
-results_dir: /home/vicyesmo@upvnet.upv.es/schwartz-geometry-value-detection/results/smoke
+results_dir: results/smoke
 save_checkpoints: true
 training:
   num_epochs: 1
